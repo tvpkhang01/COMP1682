@@ -1,0 +1,82 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: white;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-menu {
+  cursor: pointer;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  color: #121212;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.navbar-center {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-search-input {
+  width: 400px;
+  .ant-btn-primary {
+    background-color: lightgray;
+    color: #121212;
+  }
+}
+
+.navbar-audio-button {
+  margin-left: 5px;
+  background: none;
+  border: none;
+  color: #121212;
+  background-color: lightgrey;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-more-button {
+  background: none;
+  border: none;
+  color: #121212;
+  margin-right: 10px;
+}
+
+.navbar-login-button {
+  background: none;
+  border: 1px solid;
+  color: #121212;
+}
+
+.navbar-login {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #121212;
+}
+
+.navbar-user-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+  border: 1px solid;
+  border-radius: 100%;
+}
+
+.navbar-login-text {
+  font-size: 16px;
+}

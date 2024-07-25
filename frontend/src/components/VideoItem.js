@@ -1,21 +1,19 @@
 import React from "react";
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Card, Typography } from "antd";
+
+const { Meta } = Card;
 
 const VideoItem = ({ video }) => {
   return (
-    <Card style={{ marginBottom: "20px" }}>
-      <CardMedia
-        component="img"
-        height="140"
-        image={video.thumbnail}
-        alt={video.title}
+    <Card
+      hoverable
+      style={{ width: 300, marginBottom: 20 }}
+      cover={<img alt={video.title} src={video.thumbnail} />}
+    >
+      <Meta
+        title={<Typography.Title level={4}>{video.title}</Typography.Title>}
+        description={<Typography.Paragraph>{video.description}</Typography.Paragraph>}
       />
-      <CardContent>
-        <Typography variant="h6">{video.title}</Typography>
-        <Typography variant="body2" color="textSecondary">
-          {video.description}
-        </Typography>
-      </CardContent>
     </Card>
   );
 };

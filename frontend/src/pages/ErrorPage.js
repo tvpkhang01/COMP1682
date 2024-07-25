@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Typography } from "antd";
 
 const ErrorPage = () => {
   return (

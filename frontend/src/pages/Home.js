@@ -1,54 +1,28 @@
 import React from "react";
-import VideoItem from "../components/VideoItem";
-
-const videos = [
-  {
-    id: 1,
-    title: "Video 1",
-    description: "This is a description for video 1.",
-    thumbnail: "https://via.placeholder.com/150",
-  },
-  {
-    id: 2,
-    title: "Video 2",
-    description: "This is a description for video 2.",
-    thumbnail: "https://via.placeholder.com/150",
-  },
-  {
-    id: 3,
-    title: "Video 3",
-    description: "This is a description for video 3.",
-    thumbnail: "https://via.placeholder.com/150",
-  },
-  {
-    id: 4,
-    title: "Video 4",
-    description: "This is a description for video 4.",
-    thumbnail: "https://via.placeholder.com/150",
-  },
-  {
-    id: 5,
-    title: "Video 5",
-    description: "This is a description for video 5.",
-    thumbnail: "https://via.placeholder.com/150",
-  },
-  {
-    id: 6,
-    title: "Video 6",
-    description: "This is a description for video 6.",
-    thumbnail: "https://via.placeholder.com/150",
-  },
-  // Add more video objects here
-];
+import { Card, Row, Col } from "antd";
 
 const Home = () => {
+  const videos = [
+    { title: "Video 1", description: "This is a description for video 1." },
+    { title: "Video 2", description: "This is a description for video 2." },
+    { title: "Video 3", description: "This is a description for video 3." },
+    { title: "Video 4", description: "This is a description for video 4." },
+    { title: "Video 5", description: "This is a description for video 5." },
+    { title: "Video 6", description: "This is a description for video 6." },
+  ];
+
   return (
-    <div>
-      <div className="video-grid">
-        {videos.map((video) => (
-          <VideoItem key={video.id} video={video} />
+    <div className="home">
+      <Row gutter={[16, 16]}>
+        {videos.map((video, index) => (
+          <Col md={8} lg={6} xl={4} key={index}>
+            <Card title={video.title} bordered={false}>
+              <div className="video-placeholder">150 x 150</div>
+              <p>{video.description}</p>
+            </Card>
+          </Col>
         ))}
-      </div>
+      </Row>
     </div>
   );
 };
