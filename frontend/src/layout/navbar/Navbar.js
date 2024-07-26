@@ -1,3 +1,4 @@
+// src/layout/navbar/Navbar.js
 import React from "react";
 import { Input, Button } from "antd";
 import {
@@ -10,11 +11,11 @@ import {
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ toggleSider }) => {
   return (
     <div className="navbar">
       <div className="navbar-left">
-        <MenuOutlined className="navbar-menu" />
+        <MenuOutlined className="navbar-menu" onClick={toggleSider} />
         <Link to="/" className="navbar-logo">
           <YoutubeFilled style={{ color: "red" }} />
           MyTube

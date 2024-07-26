@@ -13,9 +13,12 @@
 
 .navbar-menu {
   cursor: pointer;
+  color: #121212;
 }
 
 .navbar-logo {
+  display: flex;
+  align-items: center;
   font-size: 24px;
   color: #121212;
   text-decoration: none;
@@ -29,10 +32,11 @@
 
 .navbar-search-input {
   width: 400px;
-  .ant-btn-primary {
-    background-color: lightgray;
-    color: #121212;
-  }
+}
+
+.navbar-search-input .ant-btn-primary {
+  background-color: lightgray;
+  color: #121212;
 }
 
 .navbar-audio-button {
@@ -40,7 +44,7 @@
   background: none;
   border: none;
   color: #121212;
-  background-color: lightgrey;
+  background-color: lightgray;
 }
 
 .navbar-right {
@@ -57,7 +61,7 @@
 
 .navbar-login-button {
   background: none;
-  border: 1px solid;
+  border: 1px solid lightgray;
   color: #121212;
 }
 
@@ -73,8 +77,9 @@
   align-items: center;
   justify-content: center;
   margin-right: 5px;
-  border: 1px solid;
+  border: 1px solid lightgray;
   border-radius: 100%;
+  color: #121212;
 }
 
 .navbar-login-text {
