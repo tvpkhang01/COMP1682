@@ -1,0 +1,9 @@
+/* src/App.css */
+.main-container {
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  transition: margin-left 0.3s;
+}

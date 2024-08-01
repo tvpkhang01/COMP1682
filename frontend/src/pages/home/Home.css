@@ -1,0 +1,10 @@
+/* src/pages/home/Home.css */
+.home {
+  padding: 20px;
+}
+
+.video-placeholder {
+  background-color: #ccc;
+  width: 100%;
+  height: 150px;
+}

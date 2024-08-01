@@ -1,19 +1,26 @@
 /* src/layout/sider/Sider.css */
 .sider {
-  width: 200px;
   height: 100vh;
-  background-color: #f0f0f0;
-  position: fixed;
-  top: 60px; /* Adjust based on navbar height */
-  left: 0;
-  transition: width 0.2s;
+  transition: width 0.3s;
+}
+
+.sider-menu {
+  height: 100%;
 }
 
 .sider-collapsed {
   width: 80px;
 }
 
-.sider-menu {
-  height: 100%;
-  border: 0;
+.sider-expanded {
+  width: 240px;
+}
+
+.main-container {
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  transition: margin-left 0s;
 }

@@ -1,0 +1,9 @@
+/* src/components/VideoItem.css */
+.video-item {
+  width: 100%;
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: auto;
+}

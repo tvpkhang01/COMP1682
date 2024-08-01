@@ -1,11 +1,12 @@
 // src/App.js
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './layout/navbar/Navbar';
-import Sider from './layout/sider/Sider';
+import React, { useState } from "react";
+import Navbar from "./layout/navbar/Navbar";
+import Sider from "./layout/sider/Sider";
+import PublicRoutes from "./routes/PublicRoutes";
+import "./App.css";
 
 const App = () => {
-  const [siderVisible, setSiderVisible] = useState(false);
+  const [siderVisible, setSiderVisible] = useState(true);
 
   const toggleSider = () => {
     setSiderVisible(!siderVisible);
@@ -14,11 +15,15 @@ const App = () => {
   return (
     <div>
       <Navbar toggleSider={toggleSider} />
-      <Sider siderVisible={siderVisible} />
-      <div className={`content ${siderVisible ? 'content-with-sider' : ''}`}>
-        <Routes>
-          {/* Define your routes here */}
-        </Routes>
+      <div className="main-container">
+        <Sider siderVisible={siderVisible} />
+        <div
+          className={`content ${
+            siderVisible ? "content-with-sider" : "content-without-sider"
+          }`}
+        >
+          <PublicRoutes />
+        </div>
       </div>
     </div>
   );
