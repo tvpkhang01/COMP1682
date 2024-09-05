@@ -1,0 +1,98 @@
+.header-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 260px;
+  border-radius: var(--radius-05);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0.2;
+  transition: all 0.2s ease-in-out;
+  z-index: 50;
+}
+
+.header-menu.active {
+  top: 80px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.header-menu-wrapper.dark {
+  background-color: var(--black-3);
+  color: var(--darkwhite);
+}
+
+.header-menu-wrapper.light {
+  background-color: var(--white);
+  color: var(--black-3);
+}
+
+.header-menu-avatar {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--white-tr05);
+  padding: 1rem;
+}
+
+.header-menu-infos {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.8rem;
+}
+
+.header-menu-infos h4 {
+  font-size: 1.1rem;
+}
+
+.header-menu-infos span {
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0.2rem 0;
+}
+
+.header-menu-infos span:hover {
+  text-decoration: underline;
+}
+
+.header-menu-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-menu-links a,
+.header-menu-links .header-menu-item {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header-menu-links a span,
+.header-menu-links .header-menu-item span {
+  margin-left: 1rem;
+}
+
+.header-menu-links a:hover,
+.header-menu-links .header-menu-item:hover {
+  background-color: var(--white-tr05);
+}
+
+.header-menu-links .auth {
+  padding: 1rem;
+}
+
+.header-menu-links .auth .login-btn {
+  padding: 0.4rem 1.2rem;
+  border-radius: var(--radius-05);
+  border: none;
+  cursor: pointer;
+  background-color: var(--red);
+  color: var(--white);
+  margin-top: 0.5rem;
+  width: fit-content;
+}
+
+.header-menu-links .auth .login-btn:hover {
+  background-color: var(--darkred);
+}
