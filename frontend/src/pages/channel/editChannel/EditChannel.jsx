@@ -49,7 +49,6 @@ const EditChannel = ({ open, onClose }) => {
     console.log(data);
     clearInputs();
     onClose(false);
-    // Update channel details
   };
 
   return (

@@ -61,7 +61,7 @@
   padding: 2rem 1rem;
 }
 
-.avatar-wrapper {
+.edit-channel .avatar-wrapper {
   height: 120px;
   width: 120px;
   border-radius: 50%;
@@ -69,7 +69,7 @@
   position: relative;
 }
 
-.avatar-wrapper img {
+.edit-channel .avatar-wrapper img {
   height: 100%;
   width: 100%;
   object-fit: cover;

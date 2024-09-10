@@ -15,7 +15,7 @@ import Sider from "../sider/Sider";
 const Header = () => {
   const { state, toggleMenu } = useContext(ThemeContext);
   const [onMenu, setOnMenu] = useState(false);
-  const authUser = false;
+  const authUser = true;
 
   return (
     <div className={`header ${state?.theme}`}>

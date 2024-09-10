@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import avatar from "../../assets/avatar.png";
+import avatarImg from "../../assets/avatar.png";
 
 const Avatar = ({ src, size, radius }) => {
   const style = {
@@ -14,7 +14,7 @@ const Avatar = ({ src, size, radius }) => {
   return (
     <div className="avatar" style={style}>
       <img
-        src={avatar}
+        src={avatarImg}
         alt="avatar"
         style={{ height: "100%", width: "100%", objectFit: "cover" }}
       />
