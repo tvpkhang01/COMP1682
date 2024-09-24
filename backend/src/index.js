@@ -1,17 +1,17 @@
 const express = require("express");
-const dotenv = require("dotenv");
+const config = require("./config/config");
 
 const connectToDatabase = require("./config/dbConfig");
 
 const app = express();
-dotenv.config();
 
-const PORT = process.env.SERVER_PORT || 8000;
+connectToDatabase()
+  .then(() => {
+    require("./config/express")(app);
+    require("./config/routes")(app);
 
-app.use(express.json());
-
-connectToDatabase();
-
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+    app.listen(config.port, () => {
+      console.log(`Server listening on port ${config.port}`);
+    });
+  })
+  .catch(console.error);
