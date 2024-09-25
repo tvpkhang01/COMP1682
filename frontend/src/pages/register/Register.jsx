@@ -1,7 +1,8 @@
 import { useContext, useRef, useState } from "react";
 import "./Register.css";
 import ThemeContext from "../../context/theme/ThemeContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../../api/Api";
 
 const Register = () => {
   const { state } = useContext(ThemeContext);
@@ -9,6 +10,7 @@ const Register = () => {
   const userRef = useRef(null);
   const emailRef = useRef(null);
   const passRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleClear = () => {
     if (passRef.current) {
@@ -22,7 +24,7 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const email = emailRef.current.value;
@@ -34,7 +36,15 @@ const Register = () => {
       return;
     }
     console.log({ email, user, pass });
-
+    try {
+      const res = await register({name: user, email, password: pass});
+      if(res.status == 200) {
+        navigate();
+        handleClear();
+      }
+    } catch (err) {
+      console.log(err);
+    }
     handleClear();
   };
   return (

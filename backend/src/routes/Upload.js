@@ -1,24 +1,28 @@
 const express = require("express");
-const { uploadCover, uploadProfile, uploadVideo } = require("../config/upload");
+const {
+  uploadImage,
+  uploadAvatar,
+  uploadVideo,
+  uploadBanner,
+} = require("../config/upload");
 const verifyToken = require("../config/verifyToken");
 
 const router = express.Router();
 
-router.post("/covers", verifyToken, uploadCover.single("file"), (req, res) => {
-  res.status(200).json("cover uploaded.");
+router.post("/image", verifyToken, uploadImage.single("file"), (req, res) => {
+  res.status(200).json("Image uploaded.");
 });
 
-router.post(
-  "/profiles",
-  verifyToken,
-  uploadProfile.single("file"),
-  (req, res) => {
-    res.status(200).json("profile uploaded.");
-  }
-);
+router.post("/avatar", verifyToken, uploadAvatar.single("file"), (req, res) => {
+  res.status(200).json("Avatar uploaded.");
+});
 
-router.post("/videos", verifyToken, uploadVideo.single("file"), (req, res) => {
-  res.status(200).json("video uploaded.");
+router.post("/video", verifyToken, uploadVideo.single("file"), (req, res) => {
+  res.status(200).json("Video uploaded.");
+});
+
+router.post("/banner", verifyToken, uploadBanner.single("file"), (req, res) => {
+  res.status(200).json("Banner uploaded.");
 });
 
 module.exports = router;

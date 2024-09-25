@@ -1,9 +1,9 @@
 const multer = require("multer");
 const path = require("path");
 
-const coverStorage = multer.diskStorage({
+const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dest = path.join(__dirname, "../assets/covers");
+    const dest = path.join(__dirname, "../asset/image");
     cb(null, dest);
   },
   filename: (req, file, cb) => {
@@ -11,9 +11,9 @@ const coverStorage = multer.diskStorage({
   },
 });
 
-const profileStorage = multer.diskStorage({
+const avatarStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dest = path.join(__dirname, "../assets/profiles");
+    const dest = path.join(__dirname, "../asset/avatar");
     cb(null, dest);
   },
   filename: (req, file, cb) => {
@@ -23,7 +23,7 @@ const profileStorage = multer.diskStorage({
 
 const videoStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dest = path.join(__dirname, "../assets/videos");
+    const dest = path.join(__dirname, "../asset/video");
     cb(null, dest);
   },
   filename: (req, file, cb) => {
@@ -31,8 +31,19 @@ const videoStorage = multer.diskStorage({
   },
 });
 
-const uploadCover = multer({ storage: coverStorage });
-const uploadProfile = multer({ storage: profileStorage });
-const uploadVideo = multer({ storage: videoStorage });
+const bannerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dest = path.join(__dirname, "../asset/banner");
+    cb(null, dest);
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.filename);
+  },
+});
 
-module.exports = { uploadCover, uploadProfile, uploadVideo };
+const uploadImage = multer({ storage: imageStorage });
+const uploadAvatar = multer({ storage: avatarStorage });
+const uploadVideo = multer({ storage: videoStorage });
+const uploadBanner = multer({ storage: bannerStorage });
+
+module.exports = { uploadImage, uploadAvatar, uploadVideo, uploadBanner };

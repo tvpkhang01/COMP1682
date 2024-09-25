@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 
 dotenv.config();
-const PORT = "development";
+const env = "development";
 
 const config = {
   development: {
@@ -12,4 +12,4 @@ const config = {
   production: {},
 };
 
-module.exports = config[PORT];
+module.exports = config[env];
