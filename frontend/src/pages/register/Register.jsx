@@ -22,6 +22,7 @@ const Register = () => {
     if (userRef.current) {
       userRef.current.value = "";
     }
+    setErrMessage("");
   };
 
   const handleSubmit = async (e) => {
@@ -39,13 +40,12 @@ const Register = () => {
     try {
       const res = await register({name: user, email, password: pass});
       if(res.status == 200) {
-        navigate();
+        navigate("/login");
         handleClear();
       }
     } catch (err) {
       console.log(err);
     }
-    handleClear();
   };
   return (
     <div className="register">

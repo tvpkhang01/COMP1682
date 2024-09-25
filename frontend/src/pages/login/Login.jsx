@@ -1,13 +1,16 @@
 import "./Login.css";
 import { useContext, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ThemeContext from "../../context/theme/ThemeContext";
+import { login } from "../../api/Api";
 
 const Login = () => {
   const { state } = useContext(ThemeContext);
   const [errMessage, setErrMessage] = useState("");
   const userRef = useRef(null);
   const passRef = useRef(null);
+
+  const navigate = useNavigate();
 
   const handleClear = () => {
     if (passRef.current) {
@@ -16,9 +19,10 @@ const Login = () => {
     if (userRef.current) {
       userRef.current.value = "";
     }
+    setErrMessage("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const user = userRef.current.value;
     const pass = passRef.current.value;
@@ -26,8 +30,16 @@ const Login = () => {
       setErrMessage("Please enter all fields");
       return;
     }
-    console.log({ user, pass });
-    handleClear();
+    try {
+      const res = await login({ name: user, password: pass });
+      if (res.status == 200) {
+        console.log(res.data);
+        handleClear();
+      }
+    } catch (err) {
+      setErrMessage(err.message);
+      console.log(err);
+    }
   };
 
   return (
@@ -37,12 +49,7 @@ const Login = () => {
         {errMessage && <span className="err-msg">{errMessage}</span>}
         <form onSubmit={handleSubmit} className="form">
           <input type="text" ref={userRef} placeholder="Username" />
-          <input
-            type="password"
-            ref={passRef}
-            placeholder="Password"
-            
-          />
+          <input type="password" ref={passRef} placeholder="Password" />
           <span className="login-terms">
             By logging in you are agreeing to our Terms of Services and Privacy
             Policy.
