@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import "./Menu.css";
-import ThemeContext from "../../../context/theme/ThemeContext";
+import AppContext from "../../../context/AppContext";
 import { NavLink } from "react-router-dom";
 import Avatar from "../../avatar/Avatar";
 
@@ -9,28 +9,35 @@ import { FiLogOut } from "react-icons/fi";
 import { FaQuestionCircle } from "react-icons/fa";
 
 // eslint-disable-next-line react/prop-types
-const HeaderMenu = ({ user, open, onClose }) => {
-  const { state, toggleTheme } = useContext(ThemeContext);
+const HeaderMenu = ({ open, onClose }) => {
+  const { state, toggleTheme, logoutAuth } = useContext(AppContext);
+  const authUser = state?.channel;
   return (
     <div className={open ? "header-menu active" : "header-menu"}>
       <div className={`header-menu-wrapper ${state?.theme}`}>
-        {user && (
+        {authUser && (
           <NavLink
             onClick={() => onClose(false)}
-            to={`channel/abc`}
+            to={`channel/${authUser?._id}`}
             className="header-menu-avatar"
           >
             <Avatar size={40} />
             <div className="header-menu-infos">
-              <h5>Khang</h5>
+              <h5>{authUser?.name}</h5>
               <p>View Channel</p>
             </div>
           </NavLink>
         )}
 
         <div className="header-menu-links">
-          {user ? (
-            <div className="header-menu-item" onClick={() => onClose(false)}>
+          {authUser ? (
+            <div
+              className="header-menu-item"
+              onClick={() => {
+                logoutAuth();
+                onClose(false);
+              }}
+            >
               <FiLogOut className="header-menu-icon" />
               <span>Logout</span>
             </div>

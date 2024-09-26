@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import Avatar from "../avatar/Avatar";
 import { useContext, useState } from "react";
-import ThemeContext from "../../context/theme/ThemeContext";
+import AppContext from "../../context/AppContext";
 import "./Header.css";
 
 import { FiSearch } from "react-icons/fi";
@@ -12,10 +12,11 @@ import { RiVideoAddFill } from "react-icons/ri";
 import HeaderMenu from "./menu/Menu";
 import Sider from "../sider/Sider";
 
+
 const Header = () => {
-  const { state, toggleMenu } = useContext(ThemeContext);
+  const { state, toggleMenu } = useContext(AppContext);
   const [onMenu, setOnMenu] = useState(false);
-  const authUser = true;
+  const authUser = state?.channel;
 
   return (
     <div className={`header ${state?.theme}`}>
@@ -58,7 +59,7 @@ const Header = () => {
             </div>
           </div>
 
-          <HeaderMenu user={authUser} open={onMenu} onClose={setOnMenu} />
+          <HeaderMenu open={onMenu} onClose={setOnMenu} />
         </div>
       </div>
       <Sider />

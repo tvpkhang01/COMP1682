@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useReducer, useEffect } from "react";
-import ThemeContext from "./ThemeContext";
-import { themeReducer } from "./ThemeReducer";
+import AppContext from "./AppContext";
+import { appReducer } from "./AppReducer";
 
 const initState = {
   theme: JSON.parse(localStorage.getItem("theme")) || "dark",
@@ -10,12 +10,16 @@ const initState = {
   channel: null,
 };
 
-export const ThemeState = (props) => {
-  const [state, dispatch] = useReducer(themeReducer, initState);
+const AppState = (props) => {
+  const [state, dispatch] = useReducer(appReducer, initState);
 
   useEffect(() => {
     localStorage.setItem("theme", JSON.stringify(state.theme));
   }, [state.theme]);
+
+  useEffect(() => {
+    localStorage.setItem("auth", JSON.stringify(state.auth));
+  }, [state?.auth]);
 
   const toggleTheme = () => {
     dispatch({
@@ -28,15 +32,32 @@ export const ThemeState = (props) => {
     dispatch({ type: "TOGGLE_MENU" });
   };
 
+  const loginAuth = (auth) => {
+    dispatch({ type: "LOGIN", payload: auth });
+  };
+
+  const logoutAuth = (auth) => {
+    dispatch({ type: "LOGOUT", payload: auth });
+  };
+
+  const loadChannelInfos = (channel) => {
+    dispatch({ type: "LOAD_CHANNEL_INFOS", payload: channel });
+  };
+
   return (
-    <ThemeContext.Provider
+    <AppContext.Provider
       value={{
         state,
         toggleMenu,
         toggleTheme,
+        loginAuth,
+        logoutAuth,
+        loadChannelInfos,
       }}
     >
       {props.children}
-    </ThemeContext.Provider>
+    </AppContext.Provider>
   );
 };
+
+export default AppState;

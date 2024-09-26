@@ -1,4 +1,4 @@
-export const themeReducer = (state, action) => {
+export const appReducer = (state, action) => {
   switch (action.type) {
     case "SET_THEME":
       return {

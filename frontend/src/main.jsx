@@ -2,13 +2,13 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
-import { ThemeState } from "./context/theme/ThemeState.jsx";
+import AppState from "./context/AppState";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <ThemeState>
+    <AppState>
       <App />
-    </ThemeState>
+    </AppState>
   </BrowserRouter>
 );
 

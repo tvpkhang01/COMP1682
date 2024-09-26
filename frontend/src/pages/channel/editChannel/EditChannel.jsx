@@ -2,13 +2,13 @@ import "./EditChannel.css";
 import channelBanner from "../../../assets/channelBanner.png";
 import avatarImg from "../../../assets/avatar.png";
 import { useContext, useState } from "react";
-import ThemeContext from "../../../context/theme/ThemeContext";
+import AppContext from "../../../context/AppContext";
 
 import { FaCamera } from "react-icons/fa6";
 
 // eslint-disable-next-line react/prop-types
 const EditChannel = ({ open, onClose }) => {
-  const { state } = useContext(ThemeContext);
+  const { state } = useContext(AppContext);
   const [banner, setBanner] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [channel, setChannel] = useState({
@@ -41,11 +41,11 @@ const EditChannel = ({ open, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
-        banner,
-        avatar,
-        channel: channel.name,
-        desc: channel.desc,
-      };
+      banner,
+      avatar,
+      channel: channel.name,
+      desc: channel.desc,
+    };
     console.log(data);
     clearInputs();
     onClose(false);
@@ -74,7 +74,11 @@ const EditChannel = ({ open, onClose }) => {
         </div>
         <div className="infos">
           <div className="avatar-wrapper">
-            <img src={avatar ? URL.createObjectURL(avatar) : avatarImg} alt="avatar" className="avatar" />
+            <img
+              src={avatar ? URL.createObjectURL(avatar) : avatarImg}
+              alt="avatar"
+              className="avatar"
+            />
             <label htmlFor="upload-avatar">
               <input
                 type="file"
@@ -90,8 +94,17 @@ const EditChannel = ({ open, onClose }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="details">
-            <input value={channel.name} onChange={(e) => setChannel({...channel, name: e.target.value})} type="text" placeholder="Channel Name" />
-            <textarea value={channel.desc} onChange={(e) => setChannel({...channel, desc: e.target.value})} placeholder="Channel Description" />
+            <input
+              value={channel.name}
+              onChange={(e) => setChannel({ ...channel, name: e.target.value })}
+              type="text"
+              placeholder="Channel Name"
+            />
+            <textarea
+              value={channel.desc}
+              onChange={(e) => setChannel({ ...channel, desc: e.target.value })}
+              placeholder="Channel Description"
+            />
             <div className="actions">
               <button className="cancel-btn" onClick={handleCancel}>
                 Cancel

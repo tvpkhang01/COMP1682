@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import "./Sider.css";
-import ThemeContext from "../../context/theme/ThemeContext";
+import AppContext from "../../context/AppContext";
 import { NavLink } from "react-router-dom";
 
 import { FaLayerGroup } from "react-icons/fa";
@@ -15,7 +15,8 @@ import {
 } from "react-icons/fa6";
 
 const Sider = () => {
-  const { state, toggleTheme, toggleMenu } = useContext(ThemeContext);
+  const { state, toggleTheme, toggleMenu } = useContext(AppContext);
+  const authUser = state?.auth;
   return (
     <div className={state?.onMenu ? "sider active" : "sider"}>
       <div className={`sider-wrapper ${state?.theme}`}>
@@ -36,14 +37,17 @@ const Sider = () => {
           <span>My Videos</span>
         </NavLink>
 
-        <hr className="separator" />
-
-        <div className="auth">
-          <p>Sign in pls</p>
-          <NavLink className="login-btn" to="/login" onClick={toggleMenu}>
-            Sign In
-          </NavLink>
-        </div>
+        {!authUser && (
+          <div>
+            <hr className="separator" />
+            <div className="auth">
+              <p>Sign in pls</p>
+              <NavLink className="login-btn" to="/login" onClick={toggleMenu}>
+                Sign In
+              </NavLink>
+            </div>
+          </div>
+        )}
 
         <hr className="separator" />
 

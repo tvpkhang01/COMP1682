@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Video from "./pages/video/Video";
@@ -6,11 +7,28 @@ import Upload from "./pages/upload/Upload";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Header from "./components/header/Header";
-import ThemeContext from "./context/theme/ThemeContext";
-import { useContext } from "react";
+import AppContext from "./context/AppContext";
+import { useContext, useEffect } from "react";
+import { getChannel } from "./api/Api";
 
 function App() {
-  const { state } = useContext(ThemeContext);
+  const { state, loadChannelInfos } = useContext(AppContext);
+  
+  useEffect(() => {
+    getChannelInfos();
+  }, [state?.auth]);
+
+  const getChannelInfos = async () => {
+    if (!state?.auth) return;
+    try {
+      const res = await getChannel(state.auth.id);
+      if (res.status === 200) {
+        loadChannelInfos(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   console.log(state);
   return (
     <div className={`app ${state?.theme}`}>

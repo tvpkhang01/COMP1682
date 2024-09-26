@@ -2,10 +2,10 @@ import "./Comments.css";
 import Avatar from "../../avatar/Avatar";
 import Comment from "../comment/Comment";
 import { useContext } from "react";
-import ThemeContext from "../../../context/theme/ThemeContext";
+import AppContext from "../../../context/AppContext";
 
 const Comments = () => {
-  const { state } = useContext(ThemeContext);
+  const { state } = useContext(AppContext);
   return (
     <div className={`comments ${state?.theme}`}>
       <div className="comments-wrapper">

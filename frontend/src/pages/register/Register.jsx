@@ -1,11 +1,11 @@
 import { useContext, useRef, useState } from "react";
 import "./Register.css";
-import ThemeContext from "../../context/theme/ThemeContext";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../api/Api";
+import AppContext from "../../context/AppContext";
 
 const Register = () => {
-  const { state } = useContext(ThemeContext);
+  const { state } = useContext(AppContext);
   const [errMessage, setErrMessage] = useState("");
   const userRef = useRef(null);
   const emailRef = useRef(null);

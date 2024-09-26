@@ -1,16 +1,23 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./Login.css";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ThemeContext from "../../context/theme/ThemeContext";
 import { login } from "../../api/Api";
+import AppContext from "../../context/AppContext";
 
 const Login = () => {
-  const { state } = useContext(ThemeContext);
+  const { state, loginAuth } = useContext(AppContext);
   const [errMessage, setErrMessage] = useState("");
   const userRef = useRef(null);
   const passRef = useRef(null);
+  console.log(state?.auth);
 
   const navigate = useNavigate();
+  useEffect(() => {
+    if (state?.auth) {
+      navigate("/");
+    }
+  }, [state]);
 
   const handleClear = () => {
     if (passRef.current) {
@@ -33,11 +40,11 @@ const Login = () => {
     try {
       const res = await login({ name: user, password: pass });
       if (res.status == 200) {
-        console.log(res.data);
+        loginAuth(res.data);
         handleClear();
       }
     } catch (err) {
-      setErrMessage(err.message);
+      setErrMessage(err.response.data);
       console.log(err);
     }
   };
