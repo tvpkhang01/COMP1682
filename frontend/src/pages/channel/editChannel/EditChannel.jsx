@@ -1,19 +1,21 @@
+/* eslint-disable react/prop-types */
 import "./EditChannel.css";
 import channelBanner from "../../../assets/channelBanner.png";
 import avatarImg from "../../../assets/avatar.png";
 import { useContext, useState } from "react";
 import AppContext from "../../../context/AppContext";
+import { uploadBanner, uploadAvatar, updateChannel } from "../../../api/Api";
 
 import { FaCamera } from "react-icons/fa6";
 
-// eslint-disable-next-line react/prop-types
-const EditChannel = ({ open, onClose }) => {
+const EditChannel = ({ user, setUser, open, onClose }) => {
+  console.log(user);
   const { state } = useContext(AppContext);
   const [banner, setBanner] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [channel, setChannel] = useState({
-    name: "",
-    desc: "",
+    name: user ? user.name : "",
+    description: user ? user.description : "",
   });
 
   const handleCancel = (e) => {
@@ -38,17 +40,65 @@ const EditChannel = ({ open, onClose }) => {
     setChannel({ name: "", desc: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      banner,
-      avatar,
-      channel: channel.name,
-      desc: channel.desc,
-    };
-    console.log(data);
-    clearInputs();
-    onClose(false);
+    if (!user) return;
+
+    try {
+      const bannerUrl = await addBanner();
+      const avatarUrl = await addAvatar();
+
+      console.log(bannerUrl, avatarUrl);
+      const data = {
+        bannerUrl: bannerUrl ? bannerUrl : user?.bannerUrl,
+        avatarUrl: avatarUrl ? avatarUrl : user?.avatarUrl,
+        name: channel.name,
+        description: channel.desc,
+      };
+      console.log(data);
+      const res = await updateChannel(user._id, data);
+      if (res.status == 200) {
+        setUser(res.data);
+        clearInputs();
+        onClose(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addBanner = async () => {
+    if (!banner) return;
+    try {
+      const formData = new FormData();
+      const filename = new Date().getTime() + "-" + banner.name;
+      formData.append("filename", filename);
+      formData.append("file", banner);
+
+      const res = await uploadBanner(formData);
+      if (res.status == 200) {
+        return filename;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addAvatar = async () => {
+    if (!avatar) return;
+    try {
+      const formData = new FormData();
+      const filename = new Date().getTime() + "-" + avatar.name;
+      formData.append("filename", filename);
+      formData.append("file", avatar);
+
+      const res = await uploadAvatar(formData);
+      if (res.status == 200) {
+        return filename;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -101,7 +151,7 @@ const EditChannel = ({ open, onClose }) => {
               placeholder="Channel Name"
             />
             <textarea
-              value={channel.desc}
+              value={channel.description}
               onChange={(e) => setChannel({ ...channel, desc: e.target.value })}
               placeholder="Channel Description"
             />

@@ -3,31 +3,69 @@ import VideoCard from "../../components/videoItem/videoCard/VideoCard";
 import PlaylistCard from "../../components/videoItem/playlistCard/PlaylistCard";
 import avatarImg from "../../assets/avatar.png";
 import channelBanner from "../../assets/channelBanner.png";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import EditChannel from "./editChannel/EditChannel";
+import AppContext from "../../context/AppContext";
+import { getChannel, getAvatarUrl, getBannerUrl } from "../../api/Api";
 
 const Channel = () => {
+  const { id } = useParams();
+  const { state } = useContext(AppContext);
+  const [currentChannel, setCurrentChannel] = useState(null);
   const [tabIndex, setTabIndex] = useState(0);
   const [onEdit, setOnEdit] = useState(false);
-  const authUser = true;
+  const [subStatus, setSubStatus] = useState(false);
+  const authUser = state?.channel;
+
+  useEffect(() => {
+    loadCurrentChannel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, authUser]);
+
+  const loadCurrentChannel = async () => {
+    if (!id) return;
+    try {
+      if (id == authUser?._id) {
+        setCurrentChannel(authUser);
+        return;
+      }
+      const res = await getChannel(id);
+      if (res.status === 200) {
+        setCurrentChannel(res.data);
+        if (authUser && res.data.subscribers.includes(authUser._id)) {
+          setSubStatus(true);
+        } else {
+          setSubStatus(false);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="channel">
       <div className="channel-wrapper container">
         <div className="banner">
-          <img src={channelBanner} alt="banner" />
+          <img src={authUser ? getBannerUrl(authUser.bannerUrl) :channelBanner} alt="banner" />
         </div>
         <div className="infos">
-          <img src={avatarImg} alt="avatar" className="avatar" />
+          <img src={authUser ? getAvatarUrl(authUser.avatarUrl) : avatarImg} alt="avatar" className="avatar" />
           <div className="details">
-            <h4 className="channel-name">Khang</h4>
-            <span className="stats">1K subscribers. 100 videos</span>
-            <p className="desc">
-              This is the channel about to be published later.
-            </p>
-            {authUser ? (
+            <h4 className="channel-name">{currentChannel?.name}</h4>
+            <span className="stats">{`${currentChannel?.subscribers.length} ${
+              currentChannel?.subscribers.length > 1
+                ? "subscribers"
+                : "subscriber"
+            } ${currentChannel?.videos.length} ${
+              currentChannel?.videos.length > 1 ? "videos" : "video"
+            }`}</span>
+            <p className="desc">{currentChannel?.description}</p>
+            {authUser && currentChannel?._id == authUser?._id ? (
               <button onClick={() => setOnEdit(true)}>Edit Channel</button>
             ) : (
-              <button>Subscribe</button>
+              <button>{subStatus ? "Unsubscribe" : "Subscribe"}</button>
             )}
           </div>
         </div>
@@ -69,7 +107,14 @@ const Channel = () => {
           {tabIndex == 2 && <div className="channel-settings">Settings</div>}
         </div>
       </div>
-      <EditChannel open={onEdit} onClose={setOnEdit} />
+      {onEdit && (
+        <EditChannel
+          user={currentChannel}
+          setUser={setCurrentChannel}
+          open={onEdit}
+          onClose={setOnEdit}
+        />
+      )}
     </div>
   );
 };

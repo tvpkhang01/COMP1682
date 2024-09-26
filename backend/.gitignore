@@ -1,3 +1,7 @@
 /node_modules
 *.env
-assets
+/src/asset/avatar/*
+/src/asset/banner/*
+/src/asset/image/*
+/src/asset/video/*
+!empty.txt

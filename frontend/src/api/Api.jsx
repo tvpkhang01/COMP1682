@@ -28,6 +28,20 @@ export const likeVideo = (videoId, params) =>
 export const dislikeVideo = (videoId, params) =>
   request.patch(`/video/dislike/${videoId}`, params);
 
-export const uploadImage = (image) => request.post("upload/image", image);
-export const uploadAvatar = (avatar) => request.post("upload/avatar", avatar);
-export const uploadVideo = (video) => request.post("upload/video", video);
+export const uploadImage = (image) => request.post("/upload/image", image);
+export const uploadAvatar = (avatar) => request.post("/upload/avatar", avatar);
+export const uploadVideo = (video) => request.post("/upload/video", video);
+export const uploadBanner = (banner) => request.post("/upload/banner", banner);
+
+export const getAvatarUrl = (avatar) => {
+  return `${baseURL}/media/avatar/${avatar}`;
+};
+export const getBannerUrl = (banner) => {
+  return `${baseURL}/media/banner/${banner}`;
+};
+export const getImageUrl = (image) => {
+  return `${baseURL}/media/image/${image}`;
+};
+export const getVideoUrl = (video) => {
+  return `${baseURL}/medias/video/${video}`;
+};
