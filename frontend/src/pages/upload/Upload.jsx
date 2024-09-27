@@ -6,7 +6,7 @@ import { FaImage } from "react-icons/fa";
 
 const Upload = () => {
   const [video, setVideo] = useState(null);
-  const [cover, setCover] = useState(null);
+  const [image, setImage] = useState(null);
   const [info, setInfo] = useState({
     title: "",
     desc: "",
@@ -14,7 +14,7 @@ const Upload = () => {
 
   const clearInputs = () => {
     setVideo(null);
-    setCover(null);
+    setImage(null);
     setInfo({ title: "", desc: "" });
   };
 
@@ -22,7 +22,7 @@ const Upload = () => {
     e.preventDefault();
     const data = {
       video,
-      cover,
+      image,
       title: info.title,
       desc: info.desc,
     };
@@ -30,9 +30,9 @@ const Upload = () => {
     clearInputs();
   };
 
-  const handleCover = (e) => {
+  const handleImage = (e) => {
     e.preventDefault();
-    setCover(e.target.files[0]);
+    setImage(e.target.files[0]);
   };
 
   return (
@@ -52,17 +52,17 @@ const Upload = () => {
                 required
                 placeholder="Title"
               />
-              <label htmlFor="upload-cover">
+              <label htmlFor="upload-image">
                 <input
                   type="file"
-                  id="upload-cover"
+                  id="upload-image"
                   accept="image/png, image/jpg, image/jpeg"
                   style={{ display: "none" }}
-                  onChange={handleCover}
+                  onChange={handleImage}
                 />
-                <div className="upload-cover">
+                <div className="upload-image">
                   <FaImage className="camera-icon" />
-                  {cover ? `${cover.name}` : <span>Select cover</span>}
+                  {image ? `${image.name}` : <span>Select image</span>}
                 </div>
               </label>
               <textarea

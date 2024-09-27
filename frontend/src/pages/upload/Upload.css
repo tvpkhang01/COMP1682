@@ -29,7 +29,7 @@
 
 .upload-form input,
 .upload-form textarea,
-.upload-form .upload-cover {
+.upload-form .upload-image {
   padding: 0.5rem 0.8rem;
   margin-bottom: 1rem;
   font-size: 15px;
@@ -39,7 +39,7 @@
   border: 2px solid var(--white-tr05);
 }
 
-.upload-form .upload-cover {
+.upload-form .upload-image {
   display: flex;
   gap: 0.8rem;
   cursor: pointer;
