@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import "./VideoPlayer.css";
-import video from "../../assets/video.mp4";
+import { getVideoUrl } from "../../api/Api";
 
-// eslint-disable-next-line react/prop-types
 const VideoPlayer = ({ src }) => {
+  const video = getVideoUrl(src.videoUrl);
   return (
     <div className="video-player">
-      <video src={src ? src : video} controls />
+      <video src={video} controls />
     </div>
   );
 };

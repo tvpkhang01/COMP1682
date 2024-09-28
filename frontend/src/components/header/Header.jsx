@@ -3,6 +3,7 @@ import Avatar from "../avatar/Avatar";
 import { useContext, useState } from "react";
 import AppContext from "../../context/AppContext";
 import "./Header.css";
+import { getAvatarUrl } from "../../api/Api";
 
 import { FiSearch } from "react-icons/fi";
 import { FaBell } from "react-icons/fa";
@@ -12,11 +13,12 @@ import { RiVideoAddFill } from "react-icons/ri";
 import HeaderMenu from "./menu/Menu";
 import Sider from "../sider/Sider";
 
-
 const Header = () => {
   const { state, toggleMenu } = useContext(AppContext);
   const [onMenu, setOnMenu] = useState(false);
   const authUser = state?.channel;
+
+  const avatar = getAvatarUrl(authUser?.avatarUrl);
 
   return (
     <div className={`header ${state?.theme}`}>
@@ -55,7 +57,11 @@ const Header = () => {
             onClick={() => setOnMenu((prev) => !prev)}
           >
             <div className="header-avatar">
-              {authUser ? <Avatar size={35} /> : <HiDotsHorizontal />}
+              {authUser ? (
+                <Avatar src={authUser.avatarUrl ? avatar : ""} size={35} />
+              ) : (
+                <HiDotsHorizontal />
+              )}
             </div>
           </div>
 

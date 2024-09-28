@@ -43,5 +43,5 @@ export const getImageUrl = (image) => {
   return `${baseURL}/media/image/${image}`;
 };
 export const getVideoUrl = (video) => {
-  return `${baseURL}/medias/video/${video}`;
+  return `${baseURL}/media/video/${video}`;
 };

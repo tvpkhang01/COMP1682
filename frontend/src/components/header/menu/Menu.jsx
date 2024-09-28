@@ -3,6 +3,7 @@ import "./Menu.css";
 import AppContext from "../../../context/AppContext";
 import { NavLink } from "react-router-dom";
 import Avatar from "../../avatar/Avatar";
+import { getAvatarUrl } from "../../../api/Api";
 
 import { FaGear, FaFlag, FaCircleHalfStroke } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
@@ -12,6 +13,7 @@ import { FaQuestionCircle } from "react-icons/fa";
 const HeaderMenu = ({ open, onClose }) => {
   const { state, toggleTheme, logoutAuth } = useContext(AppContext);
   const authUser = state?.channel;
+  const avatar = getAvatarUrl(authUser?.avatarUrl);
   return (
     <div className={open ? "header-menu active" : "header-menu"}>
       <div className={`header-menu-wrapper ${state?.theme}`}>
@@ -21,7 +23,7 @@ const HeaderMenu = ({ open, onClose }) => {
             to={`channel/${authUser?._id}`}
             className="header-menu-avatar"
           >
-            <Avatar size={40} />
+            <Avatar src={authUser.avatarUrl ? avatar : ""} size={40} />
             <div className="header-menu-infos">
               <h5>{authUser?.name}</h5>
               <p>View Channel</p>
