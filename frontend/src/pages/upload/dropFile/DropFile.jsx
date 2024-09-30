@@ -4,7 +4,7 @@ import "./DropFile.css";
 import { MdCloudDownload } from "react-icons/md";
 import { BsFillCameraVideoFill } from "react-icons/bs";
 
-const DropFile = ({ file, setFile }) => {
+const DropFile = ({ file, setFile, selectedVideo }) => {
   const handleFile = (e) => {
     e.preventDefault();
     setFile(e.target.files[0]);
@@ -26,7 +26,12 @@ const DropFile = ({ file, setFile }) => {
     <div className="drop" onDragOver={handleDrag} onDrop={handleDrop}>
       <MdCloudDownload className="icon" />
       <h4>Drop your files here.</h4>
-      {file && <span className="filename">{file.name}</span>}
+      {file ||
+        (selectedVideo && (
+          <span className="filename">
+            {file ? file.name : selectedVideo ? selectedVideo.videoUrl : ""}
+          </span>
+        ))}
       <label htmlFor="upload-video">
         <input
           type="file"

@@ -3,11 +3,18 @@ import Avatar from "../../components/avatar/Avatar";
 import OtherVideos from "../../components/otherVideos/OtherVideos";
 import VideoPlayer from "../../components/videoPlayer/VideoPlayer";
 import "./Video.css";
-import { getVideo, getAvatarUrl } from "../../api/Api";
+import {
+  getVideo,
+  getAvatarUrl,
+  dislikeVideo,
+  likeVideo,
+  deleteVideo,
+} from "../../api/Api";
 import Comments from "../../components/commentItem/comments/Comments";
 import { useNavigate, useParams } from "react-router-dom";
 import AppContext from "../../context/AppContext";
 import dayjs from "dayjs";
+import Upload from "../upload/Upload";
 
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
@@ -17,13 +24,13 @@ import { HiDotsHorizontal } from "react-icons/hi";
 const Video = () => {
   const { state } = useContext(AppContext);
   const [more, setMore] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const [onEdit, setOnEdit] = useState(false);
   const [subStatus, setSubStatus] = useState(false);
   const [videoDetails, setVideoDetails] = useState(null);
   const authUser = state?.channel;
 
   const { id } = useParams();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadCurrentVideo(id);
@@ -46,6 +53,48 @@ const Video = () => {
       console.log(err);
     }
   };
+
+  const handleLike = async () => {
+    if (!videoDetails || !authUser) return;
+
+    try {
+      let res = null;
+      if (videoDetails.likes.includes(authUser._id)) {
+        res = await dislikeVideo(videoDetails._id);
+      } else {
+        res = await likeVideo(videoDetails._id);
+      }
+      if (res?.status == 200) {
+        loadCurrentVideo();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!videoDetails) return;
+
+    try {
+      if (window.confirm("Are you sure you want to delete this?")) {
+        const res = await deleteVideo(videoDetails._id);
+        if (res.status == 200) {
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (onEdit && videoDetails)
+    return (
+      <Upload
+        selectedVideo={videoDetails}
+        setSelectedVideo={setVideoDetails}
+        onClose={setOnEdit}
+      />
+    );
   console.log(videoDetails);
   return (
     <div className="video-preview">
@@ -81,27 +130,26 @@ const Video = () => {
                   <>
                     <div
                       className="action-item"
-                      // onClick={() => setOnEdit(true)}
+                      onClick={() => setOnEdit(true)}
                     >
                       <FaEdit />
                     </div>
-                    <div
-                      className="action-item"
-                      //  onClick={handleDelete}
-                    >
+                    <div className="action-item" onClick={handleDelete}>
                       <FaTrashAlt />
                     </div>
                   </>
                 )}
                 <div className="like-wrapper">
-                  <div
-                    className="action-item"
-                    onClick={() => setLiked((prev) => !prev)}
-                  >
-                    {liked ? <FaHeart /> : <FaRegHeart />}
+                  <div className="action-item" onClick={handleLike}>
+                    {videoDetails?.likes.includes(authUser?._id) ? (
+                      <FaHeart />
+                    ) : (
+                      <FaRegHeart />
+                    )}
                   </div>
                   <span>{videoDetails?.likes.length}</span>
                 </div>
+
                 <div className="action-item">
                   <FaShare />
                 </div>
