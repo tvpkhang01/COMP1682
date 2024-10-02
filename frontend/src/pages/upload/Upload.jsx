@@ -117,7 +117,7 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
   return (
     <div className="upload">
       <div className={`wrapper ${state?.theme} container`}>
-      <h2 className="heading">
+        <h2 className="heading">
           {selectedVideo && (
             <FaArrowLeft
               onClick={() => onClose(false)}
@@ -128,7 +128,15 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
         </h2>
         <div className="inputs-wrapper">
           <div className="left">
-            <DropFile file={video} setFile={setVideo} selectedVideo={selectedVideo} />
+            {selectedVideo ? (
+              <DropFile
+                file={video}
+                setFile={setVideo}
+                selectedVideo={selectedVideo}
+              />
+            ) : (
+              <DropFile file={video} setFile={setVideo} />
+            )}
           </div>
           <div className="right">
             <form onSubmit={handleSubmit} className="upload-form">

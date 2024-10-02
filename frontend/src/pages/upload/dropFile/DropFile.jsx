@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import "./DropFile.css";
-
 import { MdCloudDownload } from "react-icons/md";
 import { BsFillCameraVideoFill } from "react-icons/bs";
 
 const DropFile = ({ file, setFile, selectedVideo }) => {
   const handleFile = (e) => {
     e.preventDefault();
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type === "video/mp4") {
+      setFile(selectedFile);
+    }
   };
 
   const handleDrag = (e) => {
@@ -16,9 +18,9 @@ const DropFile = ({ file, setFile, selectedVideo }) => {
 
   const handleDrop = (e) => {
     e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (e.dataTransfer && e.dataTransfer.items[0].type == "video/mp4") {
-      setFile(file);
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile && droppedFile.type === "video/mp4") {
+      setFile(droppedFile);
     }
   };
 
@@ -26,12 +28,11 @@ const DropFile = ({ file, setFile, selectedVideo }) => {
     <div className="drop" onDragOver={handleDrag} onDrop={handleDrop}>
       <MdCloudDownload className="icon" />
       <h4>Drop your files here.</h4>
-      {file ||
-        (selectedVideo && (
-          <span className="filename">
-            {file ? file.name : selectedVideo ? selectedVideo.videoUrl : ""}
-          </span>
-        ))}
+
+      <span className="filename">
+        {file ? file.name : selectedVideo ? selectedVideo.videoUrl : ""}
+      </span>
+
       <label htmlFor="upload-video">
         <input
           type="file"

@@ -9,6 +9,8 @@ import {
   dislikeVideo,
   likeVideo,
   deleteVideo,
+  subscribeChannel,
+  unsubscribeChannel,
 } from "../../api/Api";
 import Comments from "../../components/commentItem/comments/Comments";
 import { useNavigate, useParams } from "react-router-dom";
@@ -34,7 +36,6 @@ const Video = () => {
 
   useEffect(() => {
     loadCurrentVideo(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, authUser]);
 
   const loadCurrentVideo = async () => {
@@ -87,6 +88,27 @@ const Video = () => {
     }
   };
 
+  const handleSubscribe = async () => {
+    if (!videoDetails || !authUser) return;
+
+    try {
+      if (!subStatus) {
+        const res = await subscribeChannel(videoDetails.channelId);
+        if (res.status == 200) {
+          setSubStatus(true);
+        }
+      } else {
+        const res = await unsubscribeChannel(videoDetails.channelId);
+        if (res.status == 200) {
+          setSubStatus(false);
+        }
+      }
+      loadCurrentVideo();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (onEdit && videoDetails)
     return (
       <Upload
@@ -114,16 +136,18 @@ const Video = () => {
                     <h4 className="name">{videoDetails?.name}</h4>
                     <span>5K subscribers</span>
                   </div>
-                  {videoDetails?.channelId == authUser?._id ? (
-                    <button>
-                      <a href={`/channel/${videoDetails?.channelId}`}>
-                        View Channel
-                      </a>
-                    </button>
-                  ) : (
-                    <button>{subStatus ? "unsubscribe" : "subscribe"}</button>
-                  )}
                 </a>
+                {videoDetails?.channelId == authUser?._id ? (
+                  <button>
+                    <a href={`/channel/${videoDetails?.channelId}`}>
+                      View Channel
+                    </a>
+                  </button>
+                ) : (
+                  <button onClick={handleSubscribe}>
+                    {subStatus ? "Unsubscribe" : "Subscribe"}
+                  </button>
+                )}
               </div>
               <div className="right">
                 {videoDetails?.channelId == authUser?._id && (

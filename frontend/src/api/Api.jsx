@@ -15,10 +15,10 @@ export const subscribeChannel = (channelId, params) =>
 export const unsubscribeChannel = (channelId, params) =>
   request.patch(`channel/unsubscribe/${channelId}`, params);
 
-export const getVideos = () => request.get("/video");
-export const getVideo = (videoId) => request.get(`/video/${videoId}`);
-export const getVideoByChannel = (channelId) =>
+export const getVideos = (search = "") => request.get(`/video${search}`);
+export const getVideosByChannel = (channelId) =>
   request.get(`/video/channel/${channelId}`);
+export const getVideo = (videoId) => request.get(`/video/${videoId}`);
 export const createVideo = (params) => request.post("/video", params);
 export const updateVideo = (videoId, params) =>
   request.patch(`/video/${videoId}`, params);

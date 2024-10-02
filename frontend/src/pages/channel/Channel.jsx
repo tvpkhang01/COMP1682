@@ -1,5 +1,4 @@
 import "./Channel.css";
-import VideoCard from "../../components/videoItem/videoCard/VideoCard";
 import PlaylistCard from "../../components/videoItem/playlistCard/PlaylistCard";
 import avatarImg from "../../assets/avatar.png";
 import channelBanner from "../../assets/channelBanner.png";
@@ -7,7 +6,14 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import EditChannel from "./editChannel/EditChannel";
 import AppContext from "../../context/AppContext";
-import { getChannel, getAvatarUrl, getBannerUrl } from "../../api/Api";
+import {
+  getChannel,
+  getAvatarUrl,
+  getBannerUrl,
+  subscribeChannel,
+  unsubscribeChannel,
+} from "../../api/Api";
+import ChannelVideos from "./videos/ChannelVideos";
 
 const Channel = () => {
   const { id } = useParams();
@@ -20,7 +26,6 @@ const Channel = () => {
 
   useEffect(() => {
     loadCurrentChannel();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, authUser]);
 
   const loadCurrentChannel = async () => {
@@ -44,14 +49,41 @@ const Channel = () => {
     }
   };
 
+  const handleSubscribe = async () => {
+    if (!currentChannel || !authUser) return;
+
+    try {
+      if (!subStatus) {
+        const res = await subscribeChannel(currentChannel._id);
+        if (res.status == 200) {
+          setSubStatus(true);
+        }
+      } else {
+        const res = await unsubscribeChannel(currentChannel._id);
+        if (res.status == 200) {
+          setSubStatus(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="channel">
       <div className="channel-wrapper container">
         <div className="banner">
-          <img src={authUser ? getBannerUrl(authUser.bannerUrl) :channelBanner} alt="banner" />
+          <img
+            src={authUser ? getBannerUrl(authUser.bannerUrl) : channelBanner}
+            alt="banner"
+          />
         </div>
         <div className="infos">
-          <img src={authUser ? getAvatarUrl(authUser.avatarUrl) : avatarImg} alt="avatar" className="avatar" />
+          <img
+            src={authUser ? getAvatarUrl(authUser.avatarUrl) : avatarImg}
+            alt="avatar"
+            className="avatar"
+          />
           <div className="details">
             <h4 className="channel-name">{currentChannel?.name}</h4>
             <span className="stats">{`${currentChannel?.subscribers.length} ${
@@ -65,7 +97,9 @@ const Channel = () => {
             {authUser && currentChannel?._id == authUser?._id ? (
               <button onClick={() => setOnEdit(true)}>Edit Channel</button>
             ) : (
-              <button>{subStatus ? "Unsubscribe" : "Subscribe"}</button>
+              <button onClick={handleSubscribe}>
+                {subStatus ? "Unsubscribe" : "Subscribe"}
+              </button>
             )}
           </div>
         </div>
@@ -90,13 +124,7 @@ const Channel = () => {
           </div>
         </div>
         <div className="tab-content">
-          {tabIndex == 0 && (
-            <div className="list-items">
-              {[...Array(15)].map((item, index) => (
-                <VideoCard key={index} />
-              ))}
-            </div>
-          )}
+          {tabIndex == 0 && <ChannelVideos channelId={id} />}
           {tabIndex == 1 && (
             <div className="list-items">
               {[...Array(15)].map((item, index) => (

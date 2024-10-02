@@ -62,7 +62,7 @@ const HeaderMenu = ({ open, onClose }) => {
             }}
           >
             <FaCircleHalfStroke className="header-menu-icon" />
-            <span>Dark Mode</span>
+            <span>{state?.theme == "dark" ? "Light mode" : "Dark mode"}</span>
           </div>
           <NavLink
             to="/settings"

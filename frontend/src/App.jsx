@@ -10,10 +10,11 @@ import Header from "./components/header/Header";
 import AppContext from "./context/AppContext";
 import { useContext, useEffect } from "react";
 import { getChannel } from "./api/Api";
+import Search from "./pages/search/Search";
 
 function App() {
   const { state, loadChannelInfos } = useContext(AppContext);
-  
+
   useEffect(() => {
     getChannelInfos();
   }, [state?.auth]);
@@ -36,6 +37,7 @@ function App() {
       <Routes>
         <Route path="/">
           <Route index element={<Home />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/video">
             <Route path=":id" element={<Video />} />
           </Route>

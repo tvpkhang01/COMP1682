@@ -2,8 +2,16 @@ const Video = require("../models/Video");
 const Channel = require("../models/Channel");
 
 const getVideos = async (req, res, next) => {
+  const searchParams = req.query.search;
   try {
-    const videos = await Video.find();
+    let videos = [];
+    if (searchParams) {
+      videos = await Video.find({
+        title: { $regex: searchParams, $options: "i" },
+      });
+    } else {
+      videos = await Video.find();
+    }
     const l_videos = await fetchChannelInfos(videos);
     if (videos) {
       res.status(200).json(l_videos);
