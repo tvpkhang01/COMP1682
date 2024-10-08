@@ -97,7 +97,7 @@ const updateVideo = async (req, res, next) => {
       const { _id, ...channel } = l_channel._doc;
       res.status(200).json({ ...updatedVideo._doc, ...channel });
     } else {
-      return res.status(403).json("Update videos other channels not allowed.");
+      return res.status(403).json("Update videos from other channels not allowed.");
     }
   } catch (error) {
     next(error);

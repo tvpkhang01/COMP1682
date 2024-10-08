@@ -10,7 +10,14 @@ const VideoSchema = new mongoose.Schema(
     views: { type: Number, default: 0 },
     likes: { type: [String], default: [] },
     dislikes: { type: [String], default: [] },
-    comments: { type: [String], default: [] }
+    comments: { type: [String], default: [] },
+    playlists: { type: [String], default: [] },
+    category: {
+      type: String,
+      enum: ["Music", "Education", "Sports", "Gaming", "News", "Entertainment"],
+      required: true,
+    },
+    
   },
   { timestamps: true }
 );

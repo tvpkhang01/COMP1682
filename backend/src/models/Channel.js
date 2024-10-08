@@ -11,6 +11,7 @@ const ChannelSchema = new mongoose.Schema(
     subscribers: { type: [String] },
     subscriptions: { type: [String] },
     videos: { type: [String] },
+    playlists: { type: [String] },
     admin: { type: Boolean, default: false }
   },
   { timestamps: true }
