@@ -12,6 +12,7 @@ import { useContext, useEffect } from "react";
 import { getChannel } from "./api/Api";
 import Search from "./pages/search/Search";
 import Settings from "./pages/channel/settings/Settings";
+import Admin from "./pages/admin/Admin";
 
 function App() {
   const { state, loadChannelInfos } = useContext(AppContext);
@@ -39,6 +40,9 @@ function App() {
       <Routes>
         <Route path="/">
           <Route index element={<Home />} />
+          <Route path="/admin">
+            <Route index element={<Admin />} />
+          </Route>
           <Route path="/search" element={<Search />} />
           <Route path="/video">
             <Route path=":id" element={<Video />} />
@@ -60,4 +64,3 @@ function App() {
 }
 
 export default App;
-

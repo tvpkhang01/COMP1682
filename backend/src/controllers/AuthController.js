@@ -51,6 +51,7 @@ const login = async (req, res, next) => {
         id: l_channel._id,
         name: l_channel.name,
         avatarUrl: l_channel.avatarUrl,
+        admin: l_channel.admin,
       });
   } catch (err) {
     next(err);
