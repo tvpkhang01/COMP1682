@@ -3,7 +3,7 @@ import PlaylistCard from "../../components/videoItem/playlistCard/PlaylistCard";
 import avatarImg from "../../assets/avatar.png";
 import channelBanner from "../../assets/channelBanner.png";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EditChannel from "./editChannel/EditChannel";
 import AppContext from "../../context/AppContext";
 import {
@@ -17,12 +17,20 @@ import ChannelVideos from "./videos/ChannelVideos";
 
 const Channel = () => {
   const { id } = useParams();
-  const { state } = useContext(AppContext);
+  const { state, logoutAuth } = useContext(AppContext);
   const [currentChannel, setCurrentChannel] = useState(null);
   const [tabIndex, setTabIndex] = useState(0);
   const [onEdit, setOnEdit] = useState(false);
   const [subStatus, setSubStatus] = useState(false);
   const authUser = state?.channel;
+  const navigate = useNavigate();
+  const url = new URL(window.location.href);
+  const tabPlaylist = url.searchParams.get("tabPlaylist");
+
+  useEffect(() => {
+    console.log(tabPlaylist);
+    setTabIndex(tabPlaylist ? 1 : 0);
+  }, []);
 
   useEffect(() => {
     loadCurrentChannel();
@@ -64,8 +72,13 @@ const Channel = () => {
           setSubStatus(false);
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -116,12 +129,6 @@ const Channel = () => {
           >
             <span>Playlist</span>
           </div>
-          <div
-            className={tabIndex == 2 ? "tab-item active" : "tab-item"}
-            onClick={() => setTabIndex(2)}
-          >
-            <span>Settings</span>
-          </div>
         </div>
         <div className="tab-content">
           {tabIndex == 0 && <ChannelVideos channelId={id} />}
@@ -132,7 +139,6 @@ const Channel = () => {
               ))}
             </div>
           )}
-          {tabIndex == 2 && <div className="channel-settings">Settings</div>}
         </div>
       </div>
       {onEdit && (

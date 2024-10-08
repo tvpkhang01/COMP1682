@@ -3,7 +3,7 @@ import "./Menu.css";
 import AppContext from "../../../context/AppContext";
 import { NavLink } from "react-router-dom";
 import Avatar from "../../avatar/Avatar";
-import { getAvatarUrl } from "../../../api/Api";
+import { getAvatarUrl, logout } from "../../../api/Api";
 
 import { FaGear, FaFlag, FaCircleHalfStroke } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
@@ -14,6 +14,18 @@ const HeaderMenu = ({ open, onClose }) => {
   const { state, toggleTheme, logoutAuth } = useContext(AppContext);
   const authUser = state?.channel;
   const avatar = getAvatarUrl(authUser?.avatarUrl);
+
+  const handleLogout = async () => {
+    try {
+      const res = await logout({ name: state?.auth.name });
+      if (res.status == 200) {
+        logoutAuth();
+        onClose(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className={open ? "header-menu active" : "header-menu"}>
       <div className={`header-menu-wrapper ${state?.theme}`}>
@@ -33,19 +45,12 @@ const HeaderMenu = ({ open, onClose }) => {
 
         <div className="header-menu-links">
           {authUser ? (
-            <div
-              className="header-menu-item"
-              onClick={() => {
-                logoutAuth();
-                onClose(false);
-              }}
-            >
+            <div className="header-menu-item" onClick={handleLogout}>
               <FiLogOut className="header-menu-icon" />
               <span>Logout</span>
             </div>
           ) : (
             <div className="auth">
-              <p>Sign in now pls</p>
               <NavLink
                 to="/login"
                 className="login-btn"
@@ -59,20 +64,24 @@ const HeaderMenu = ({ open, onClose }) => {
             className="header-menu-item"
             onClick={() => {
               toggleTheme();
+              onClose(false);
             }}
           >
             <FaCircleHalfStroke className="header-menu-icon" />
             <span>{state?.theme == "dark" ? "Light mode" : "Dark mode"}</span>
           </div>
-          <NavLink
-            to="/settings"
-            onClick={() => {
-              onClose(false);
-            }}
-          >
-            <FaGear className="header-menu-icon" />
-            <span>Setting</span>
-          </NavLink>
+          {authUser && (
+            <NavLink
+              to={`/channel/${authUser._id}/settings`}
+              onClick={() => {
+                onClose(false);
+              }}
+            >
+              <FaGear className="header-menu-icon" />
+              <span>Setting (Under Construction)</span>
+            </NavLink>
+          )}
+
           <NavLink
             to="/report"
             onClick={() => {
@@ -80,7 +89,7 @@ const HeaderMenu = ({ open, onClose }) => {
             }}
           >
             <FaFlag className="header-menu-icon" />
-            <span>Report</span>
+            <span>Report (Under Construction)</span>
           </NavLink>
           <NavLink
             to="/help"
@@ -89,7 +98,7 @@ const HeaderMenu = ({ open, onClose }) => {
             }}
           >
             <FaQuestionCircle className="header-menu-icon" />
-            <span>Help</span>
+            <span>Help (Under Construction)</span>
           </NavLink>
         </div>
       </div>

@@ -22,9 +22,9 @@ const ChannelVideos = ({ channelId }) => {
       };
   return (
     <div className="list-items">
-      {videos.map((item, index) => (
+      {videos == [] ? videos.map((item, index) => (
         <VideoCard key={index} video={item} />
-      ))}
+      )) : "No videos found"}
     </div>
   )
 }

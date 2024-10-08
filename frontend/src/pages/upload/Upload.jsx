@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { FaImage, FaArrowLeft } from "react-icons/fa";
 
 const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
-  const { state } = useContext(AppContext);
+  const { state, logoutAuth } = useContext(AppContext);
   const [video, setVideo] = useState(null);
   const [image, setImage] = useState(null);
   const [info, setInfo] = useState({
@@ -72,6 +72,11 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
       }
     } catch (err) {
       console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -92,8 +97,13 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
       if (res.status == 200) {
         return filename;
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -109,8 +119,13 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
       if (res.status == 200) {
         return filename;
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 

@@ -20,11 +20,9 @@ import Upload from "../upload/Upload";
 
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
-import { FaShare } from "react-icons/fa6";
-import { HiDotsHorizontal } from "react-icons/hi";
 
 const Video = () => {
-  const { state } = useContext(AppContext);
+  const { state, logoutAuth } = useContext(AppContext);
   const [more, setMore] = useState(false);
   const [onEdit, setOnEdit] = useState(false);
   const [subStatus, setSubStatus] = useState(false);
@@ -70,6 +68,11 @@ const Video = () => {
       }
     } catch (err) {
       console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -83,8 +86,13 @@ const Video = () => {
           navigate("/");
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -104,8 +112,13 @@ const Video = () => {
         }
       }
       loadCurrentVideo();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -172,13 +185,6 @@ const Video = () => {
                     )}
                   </div>
                   <span>{videoDetails?.likes.length}</span>
-                </div>
-
-                <div className="action-item">
-                  <FaShare />
-                </div>
-                <div className="action-item">
-                  <HiDotsHorizontal />
                 </div>
               </div>
             </div>

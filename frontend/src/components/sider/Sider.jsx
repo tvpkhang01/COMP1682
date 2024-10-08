@@ -22,26 +22,34 @@ const Sider = () => {
       <div className={`sider-wrapper ${state?.theme}`}>
         <NavLink to="/" onClick={toggleMenu}>
           <FaHouse className="sider-icon" />
-          <span>My Videos</span>
+          <span>Home Page</span>
         </NavLink>
-        <NavLink to="/videos/history" onClick={toggleMenu}>
-          <FaClockRotateLeft className="sider-icon" />
-          <span>History</span>
-        </NavLink>
-        <NavLink to="/videos/playlist" onClick={toggleMenu}>
-          <FaLayerGroup className="sider-icon" />
-          <span>Playlists</span>
-        </NavLink>
-        <NavLink to={`/channel/videos/abc`} onClick={toggleMenu}>
-          <FaCirclePlay className="sider-icon" />
-          <span>My Videos</span>
-        </NavLink>
+        {authUser && (
+          <div>
+            <hr className="separator" />
+            <NavLink to={`/channel/${authUser.id}`} onClick={toggleMenu}>
+              <FaCirclePlay className="sider-icon" />
+              <span>My Channel</span>
+            </NavLink>
+            <NavLink to={`/channel/${authUser.id}?tabPlaylist=true`} onClick={toggleMenu}>
+              <FaLayerGroup className="sider-icon" />
+              <span>Playlists (Under Construction)</span>
+            </NavLink>
+            <NavLink to={`/channel/${authUser.id}`} onClick={toggleMenu}>
+              <FaClockRotateLeft className="sider-icon" />
+              <span>History (Under Construction)</span>
+            </NavLink>
+            <NavLink to={`/channel/${authUser.id}/settings`} onClick={toggleMenu}>
+              <FaGear className="sider-icon" />
+              <span>Settings</span>
+            </NavLink>
+          </div>
+        )}
 
         {!authUser && (
           <div>
             <hr className="separator" />
             <div className="auth">
-              <p>Sign in pls</p>
               <NavLink className="login-btn" to="/login" onClick={toggleMenu}>
                 Sign In
               </NavLink>
@@ -51,17 +59,13 @@ const Sider = () => {
 
         <hr className="separator" />
 
-        <NavLink to="/settings" onClick={toggleMenu}>
-          <FaGear className="sider-icon" />
-          <span>Settings</span>
-        </NavLink>
         <NavLink to="/reports" onClick={toggleMenu}>
           <FaFlag className="sider-icon" />
-          <span>Report</span>
+          <span>Report (Under Construction)</span>
         </NavLink>
         <NavLink to="/help" onClick={toggleMenu}>
           <FaCircleQuestion className="sider-icon" />
-          <span>Help</span>
+          <span>Help (Under Construction)</span>
         </NavLink>
         <div className="toggle-theme" onClick={toggleTheme}>
           <FaCircleHalfStroke className="sider-icon" />

@@ -57,4 +57,20 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+const logout = (req, res, next) => {
+  try {
+    res
+      .cookie("accessToken", "", {
+        maxAge: 0,
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      })
+      .status(200)
+      .json({ message: "Logged out successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { register, login, logout };

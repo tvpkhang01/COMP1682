@@ -23,9 +23,9 @@ const Search = () => {
   return (
     <div className="home">
       <div className="video-list">
-        {videos.map((item, index) => (
+        {videos == [] ? videos.map((item, index) => (
           <VideoCard key={index} video={item} />
-        ))}
+        )) : "No videos found"}
       </div>
     </div>
   );

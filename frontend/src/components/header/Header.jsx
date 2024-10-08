@@ -6,7 +6,6 @@ import "./Header.css";
 import { getAvatarUrl } from "../../api/Api";
 
 import { FiSearch } from "react-icons/fi";
-import { FaBell } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { RiVideoAddFill } from "react-icons/ri";
@@ -44,7 +43,14 @@ const Header = () => {
         </div>
         <div className="header-center">
           <form onSubmit={handleSearch} className="header-form">
-            <input value={onSearch} onChange={(e) => {setOnSearch(e.target.value)}} type="search" placeholder="Search" />
+            <input
+              value={onSearch}
+              onChange={(e) => {
+                setOnSearch(e.target.value);
+              }}
+              type="search"
+              placeholder="Search"
+            />
             <button type="submit">
               <FiSearch />
             </button>
@@ -52,14 +58,9 @@ const Header = () => {
         </div>
         <div className="header-right">
           {authUser && (
-            <>
-              <NavLink to="/upload" className="header-icon">
-                <RiVideoAddFill />
-              </NavLink>
-              <NavLink to="/notifications" className="header-icon">
-                <FaBell />
-              </NavLink>
-            </>
+            <NavLink to="/upload" className="header-icon">
+              <RiVideoAddFill />
+            </NavLink>
           )}
 
           <div

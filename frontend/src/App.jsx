@@ -11,6 +11,7 @@ import AppContext from "./context/AppContext";
 import { useContext, useEffect } from "react";
 import { getChannel } from "./api/Api";
 import Search from "./pages/search/Search";
+import Settings from "./pages/channel/settings/Settings";
 
 function App() {
   const { state, loadChannelInfos } = useContext(AppContext);
@@ -30,6 +31,7 @@ function App() {
       console.log(err);
     }
   };
+
   console.log(state);
   return (
     <div className={`app ${state?.theme}`}>
@@ -42,7 +44,10 @@ function App() {
             <Route path=":id" element={<Video />} />
           </Route>
           <Route path="/channel">
-            <Route path=":id" element={<Channel />} />
+            <Route path=":id">
+              <Route index element={<Channel />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
           </Route>
           <Route path="/upload" element={<Upload />} />
           <Route path="/login" element={<Login />} />

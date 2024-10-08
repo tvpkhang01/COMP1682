@@ -7,16 +7,20 @@ import AppContext from "../../../context/AppContext";
 import { uploadBanner, uploadAvatar, updateChannel } from "../../../api/Api";
 
 import { FaCamera } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const EditChannel = ({ user, setUser, open, onClose }) => {
   console.log(user);
-  const { state } = useContext(AppContext);
+  const navigate = useNavigate();
+  const { state, logoutAuth } = useContext(AppContext);
   const [banner, setBanner] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [channel, setChannel] = useState({
     name: user ? user.name : "",
     description: user ? user.description : "",
   });
+
+
 
   const handleCancel = (e) => {
     e.preventDefault();
@@ -53,7 +57,7 @@ const EditChannel = ({ user, setUser, open, onClose }) => {
         bannerUrl: bannerUrl ? bannerUrl : user?.bannerUrl,
         avatarUrl: avatarUrl ? avatarUrl : user?.avatarUrl,
         name: channel.name,
-        description: channel.desc,
+        description: channel.description,
       };
       console.log(data);
       const res = await updateChannel(user._id, data);
@@ -64,6 +68,11 @@ const EditChannel = ({ user, setUser, open, onClose }) => {
       }
     } catch (err) {
       console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -79,8 +88,13 @@ const EditChannel = ({ user, setUser, open, onClose }) => {
       if (res.status == 200) {
         return filename;
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -96,8 +110,14 @@ const EditChannel = ({ user, setUser, open, onClose }) => {
       if (res.status == 200) {
         return filename;
       }
-    } catch (error) {
-      console.log(error);
+      return;
+    } catch (err) {
+      console.log(err);
+      if (err.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
     }
   };
 
@@ -152,7 +172,9 @@ const EditChannel = ({ user, setUser, open, onClose }) => {
             />
             <textarea
               value={channel.description}
-              onChange={(e) => setChannel({ ...channel, desc: e.target.value })}
+              onChange={(e) =>
+                setChannel({ ...channel, description: e.target.value })
+              }
               placeholder="Channel Description"
             />
             <div className="actions">
