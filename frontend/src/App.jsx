@@ -9,13 +9,35 @@ import Register from "./pages/register/Register";
 import Header from "./components/header/Header";
 import AppContext from "./context/AppContext";
 import { useContext, useEffect } from "react";
-import { getChannel } from "./api/Api";
+import { checkToken, getChannel } from "./api/Api";
 import Search from "./pages/search/Search";
 import Settings from "./pages/channel/settings/Settings";
 import Admin from "./pages/admin/Admin";
 
 function App() {
-  const { state, loadChannelInfos } = useContext(AppContext);
+  const { state, loadChannelInfos, logoutAuth } = useContext(AppContext);
+
+  useEffect(() => {
+    async function checkTokenData() {
+      try {
+        const res = await checkToken();
+        if (res.status === 200) {
+          logoutAuth();
+        }
+      } catch (error) {
+        if (error.status == 404 && state?.auth) {
+          console.log("User still authenticated, nothing to do here");
+        } else if (error.status == 404) {
+          console.log(
+            "User is not logging and token is not here, so nothing to do here"
+          );
+        } else {
+          console.log("Other error: " + error);
+        }
+      }
+    }
+    checkTokenData();
+  }, []);
 
   useEffect(() => {
     getChannelInfos();

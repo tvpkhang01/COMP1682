@@ -13,8 +13,8 @@ const register = async (req, res, next) => {
     await l_channel.save();
 
     res.status(201).json({ message: "Channel created successfully!" });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -53,8 +53,8 @@ const login = async (req, res, next) => {
         avatarUrl: l_channel.avatarUrl,
         admin: l_channel.admin,
       });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -67,11 +67,26 @@ const logout = (req, res, next) => {
         secure: true,
         sameSite: "strict",
       })
+      .cookie("refreshToken", "", {
+        maxAge: 0,
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      })
       .status(200)
       .json({ message: "Logged out successfully" });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
-module.exports = { register, login, logout };
+const checkToken = (req, res, next) => {
+  try {
+    const accessToken = req.cookies.accessToken;
+    if (!accessToken) return res.status(200).json("No token check");
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, logout, checkToken };

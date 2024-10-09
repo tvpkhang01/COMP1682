@@ -7,6 +7,7 @@ const request = axios.create({ baseURL, withCredentials: true });
 export const login = (params) => request.post("/auth/login", params);
 export const logout = (params) => request.post("/auth/logout", params);
 export const register = (params) => request.post("/auth/register", params);
+export const checkToken = () => request.post("/auth/checkToken");
 
 export const getChannel = (channelId) => request.get(`channel/${channelId}`);
 export const updateChannel = (channelId, params) =>
