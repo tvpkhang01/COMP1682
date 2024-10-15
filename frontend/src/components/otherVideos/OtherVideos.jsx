@@ -20,11 +20,11 @@ const OtherVideos = () => {
     }
   };
   return (
-    <div>
+    <>
       {videos.map((item, index) => (
         <VideoCard key={index} video={item} />
       ))}
-    </div>
+    </>
   );
 };
 

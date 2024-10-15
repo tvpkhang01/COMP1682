@@ -33,9 +33,6 @@ const Video = () => {
 
   const url = new URL(window.location.href);
   const playlistId = url.searchParams.get("playlistId");
-  const currentIndex = url.searchParams.get("index");
-
-  console.log(playlistId, currentIndex);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -154,6 +151,7 @@ const Video = () => {
         onClose={setOnEdit}
       />
     );
+
   console.log(videoDetails);
   return (
     <div className="video-preview">
@@ -168,10 +166,17 @@ const Video = () => {
                   href={`/channel/${videoDetails?.channelId}`}
                   className="avatar-wrapper"
                 >
-                  <Avatar size={35} src={getAvatarUrl(videoDetails?.profile)} />
+                  <Avatar
+                    size={35}
+                    src={getAvatarUrl(videoDetails?.avatarUrl)}
+                  />
                   <div className="avatar-infos">
                     <h4 className="name">{videoDetails?.name}</h4>
-                    <span>5K subscribers</span>
+                    <span>{`${videoDetails?.subscribers.length} ${
+                      videoDetails?.subscribers.length > 1
+                        ? "subscribers"
+                        : "subscriber"
+                    }`}</span>
                   </div>
                 </a>
                 {videoDetails?.channelId == authUser?._id ? (
@@ -238,33 +243,26 @@ const Video = () => {
         <div className="video-preview-right">
           {playlistId && (
             <div className="playlist-box">
-              <h4>{videoDetails?.title} Playlist</h4>
+              <h4>Playlist</h4>
               <ul>
-                {playlistVideos.map((video, idx) => (
+                {playlistVideos.map((video, index) => (
                   <li
-                    key={video.videoId}
+                    key={video}
                     className={
-                      idx == currentIndex ? "current-video" : "playlist-video"
+                      video == videoDetails?._id
+                        ? "current-video"
+                        : "playlist-video"
                     }
                   >
                     <a
-                      href={`/video/${
-                        video.videoId
-                      }?playlistId=${playlistId}&index=${idx + 1}`}
+                      href={`/video/${video}?playlistId=${playlistId}&index=${
+                        index + 1
+                      }`}
                       className="playlist-item"
                     >
-                      <div className="playlist-thumbnail">
-                        <img
-                          src={
-                            video.imageUrl ||
-                            "https://via.placeholder.com/120x70"
-                          }
-                          alt={`Video ${idx + 1}`}
-                        />
-                      </div>
                       <div className="playlist-info">
                         <span className="playlist-title">
-                          {video.title || `Video ${idx + 1}`}
+                          {video.title || `Video ${index + 1}`}
                         </span>
                       </div>
                     </a>

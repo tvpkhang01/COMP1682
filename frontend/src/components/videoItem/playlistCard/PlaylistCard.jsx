@@ -8,7 +8,7 @@ import { RiPlayList2Fill } from "react-icons/ri";
 const PlaylistCard = ({ playlist }) => {
   console.log(playlist);
   const image = playlist?.imageUrl ? getImageUrl(playlist?.imageUrl) : null;
-  const firstVideoId = playlist?.videos?.length > 0 ? playlist.videos[0].videoId : null;
+  const firstVideoId = playlist?.videos?.length > 0 ? playlist.videos[0] : null;
   console.log(image);
   return (
     <div className="playlist-card">

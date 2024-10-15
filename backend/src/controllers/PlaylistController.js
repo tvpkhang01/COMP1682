@@ -127,12 +127,11 @@ const insertVideo = async (req, res, next) => {
     if (!l_playlist) return res.status(404).json("Playlist not found");
 
     if (req.channel.id === l_playlist.channelId) {
-      if (!l_playlist.videos.some((v) => v.videoId === req.params.videoId)) {
+      if (!l_playlist.videos.includes(req.params.videoId)) {
         const l_video = await Video.findById(req.params.videoId);
-        const newIndex = l_playlist.videos.length + 1;
         await l_playlist.updateOne({
           $push: {
-            videos: { videoId: l_video._id.toString() },
+            videos: l_video._id.toString(),
           },
         });
         await l_video.updateOne({
@@ -156,10 +155,10 @@ const removeVideo = async (req, res, next) => {
 
     if (!l_playlist) return res.status(404).json("Playlist not found");
     if (req.channel.id === l_playlist.channelId) {
-      if (l_playlist.videos.some((v) => v.videoId === req.params.videoId)) {
+      if (l_playlist.videos.includes(req.params.videoId)) {
         const l_video = await Video.findById(req.params.videoId);
         await l_playlist.updateOne({
-          $pull: { videos: { videoId: l_video._id.toString() } },
+          $pull: { videos: l_video._id.toString() },
         });
         await l_video.updateOne({
           $pull: { playlists: l_playlist._id.toString() },
