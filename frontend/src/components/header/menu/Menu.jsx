@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import "./Menu.css";
 import AppContext from "../../../context/AppContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Avatar from "../../avatar/Avatar";
 import { getAvatarUrl, logout } from "../../../api/Api";
 
@@ -14,6 +14,7 @@ const HeaderMenu = ({ open, onClose }) => {
   const { state, toggleTheme, logoutAuth } = useContext(AppContext);
   const authUser = state?.channel;
   const avatar = getAvatarUrl(authUser?.avatarUrl);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -21,6 +22,7 @@ const HeaderMenu = ({ open, onClose }) => {
       if (res.status == 200) {
         logoutAuth();
         onClose(false);
+        navigate("/login");
       }
     } catch (err) {
       console.log(err);

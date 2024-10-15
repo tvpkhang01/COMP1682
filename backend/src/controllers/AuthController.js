@@ -34,7 +34,7 @@ const login = async (req, res, next) => {
       return res.status(401).json("Wrong username or password");
 
     const accessToken = jwt.sign(
-      { id: l_channel._id },
+      { id: l_channel._id, admin: l_channel.admin },
       process.env.SECRET_JWT,
       { expiresIn: "1h" }
     );

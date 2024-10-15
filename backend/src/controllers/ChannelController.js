@@ -1,8 +1,17 @@
 const Channel = require("../models/Channel");
+const bcrypt = require("bcryptjs");
 
 const updateChannel = async (req, res, next) => {
-  if (req.params.id === req.channel.id) {
+  console.log(req.params, req.channel);
+  if (req.params.id === req.channel.id || req.channel.admin === true) {
     try {
+      if (req.body.password) {
+        const hashPassword = bcrypt.hashSync(
+          req.body.password,
+          bcrypt.genSaltSync(10)
+        );
+        req.body.password = hashPassword;
+      }
       const updatedChannel = await Channel.findByIdAndUpdate(
         req.params.id,
         {
@@ -10,7 +19,8 @@ const updateChannel = async (req, res, next) => {
         },
         { new: true }
       );
-      const { createdAt, updatedAt, password, ...channel } = updatedChannel._doc;
+      const { createdAt, updatedAt, password, ...channel } =
+        updatedChannel._doc;
       res.status(200).json(channel);
     } catch (error) {
       next(error);

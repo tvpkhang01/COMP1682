@@ -3,11 +3,16 @@ const Channel = require("../models/Channel");
 
 const getVideos = async (req, res, next) => {
   const searchParams = req.query.search;
+  const categoryParams = req.query.category;
   try {
     let videos = [];
     if (searchParams) {
       videos = await Video.find({
         title: { $regex: searchParams, $options: "i" },
+      });
+    } else if (categoryParams) {
+      videos = await Video.find({
+        category: categoryParams,
       });
     } else {
       videos = await Video.find();

@@ -14,7 +14,7 @@ const VideoSchema = new mongoose.Schema(
     playlists: { type: [String], default: [] },
     category: {
       type: String,
-      enum: ["Music", "Education", "Sports", "Gaming", "News", "Entertainment"],
+      enum: ["", "Music", "Education", "Sports", "Gaming", "News", "Entertainment"],
       required: true,
     },
     

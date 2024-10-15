@@ -1,5 +1,6 @@
 const Channel = require("../models/Channel");
 const Playlist = require("../models/Playlist");
+const Video = require("../models/Video");
 
 const getPlaylistsByChannelId = async (req, res, next) => {
   const channelId = req.params.channelId;
@@ -120,6 +121,63 @@ const deletePlaylist = async (req, res, next) => {
   }
 };
 
+const insertVideo = async (req, res, next) => {
+  try {
+    const l_playlist = await Playlist.findById(req.params.id);
+    if (!l_playlist) return res.status(404).json("Playlist not found");
+
+    if (req.channel.id === l_playlist.channelId) {
+      if (!l_playlist.videos.some((v) => v.videoId === req.params.videoId)) {
+        const l_video = await Video.findById(req.params.videoId);
+        const newIndex = l_playlist.videos.length + 1;
+        await l_playlist.updateOne({
+          $push: {
+            videos: { videoId: l_video._id.toString() },
+          },
+        });
+        await l_video.updateOne({
+          $push: { playlists: l_playlist._id.toString() },
+        });
+        res.status(200).json("Video added to playlist.");
+      } else {
+        res.status(400).json("Video already in playlist.");
+      }
+    } else {
+      res.status(403).json("You can only add videos to your own playlists.");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const removeVideo = async (req, res, next) => {
+  try {
+    const l_playlist = await Playlist.findById(req.params.id);
+
+    if (!l_playlist) return res.status(404).json("Playlist not found");
+    if (req.channel.id === l_playlist.channelId) {
+      if (l_playlist.videos.some((v) => v.videoId === req.params.videoId)) {
+        const l_video = await Video.findById(req.params.videoId);
+        await l_playlist.updateOne({
+          $pull: { videos: { videoId: l_video._id.toString() } },
+        });
+        await l_video.updateOne({
+          $pull: { playlists: l_playlist._id.toString() },
+        });
+        res.status(200).json("Video removed from playlist.");
+      } else {
+        res.status(400).json("Video not found in playlist.");
+      }
+    } else {
+      res
+        .status(403)
+        .json("You can only remove videos from your own playlists.");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const fetchChannelInfos = async (playlists) => {
   let results = [];
 
@@ -139,15 +197,12 @@ const fetchChannelInfos = async (playlists) => {
 
   return results;
 };
-
-const insertVideo = async (req, res, next) => {}
-
-const removeVideo = async (req, res, next) => {}
-
 module.exports = {
   getPlaylistsByChannelId,
   getPlaylist,
   createPlaylist,
   updatePlaylist,
   deletePlaylist,
+  insertVideo,
+  removeVideo,
 };

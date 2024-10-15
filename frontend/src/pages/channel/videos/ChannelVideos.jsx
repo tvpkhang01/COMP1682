@@ -1,12 +1,14 @@
-/* eslint-disable react/prop-types */
+
 import { useEffect, useState } from "react";
 import VideoCard from "../../../components/videoItem/videoCard/VideoCard";
 import { getVideosByChannel } from "../../../api/Api";
 
+// eslint-disable-next-line react/prop-types
 const ChannelVideos = ({ channelId }) => {
     const [videos, setVideos] = useState([]);
     useEffect(() => {
         loadVideoByChannelId();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [channelId]);
     
       const loadVideoByChannelId = async () => {
@@ -22,7 +24,7 @@ const ChannelVideos = ({ channelId }) => {
       };
   return (
     <div className="list-items">
-      {videos == [] ? videos.map((item, index) => (
+      {videos.length > 0 ? videos.map((item, index) => (
         <VideoCard key={index} video={item} />
       )) : "No videos found"}
     </div>

@@ -11,6 +11,7 @@ import {
   deleteVideo,
   subscribeChannel,
   unsubscribeChannel,
+  getPlaylist,
 } from "../../api/Api";
 import Comments from "../../components/commentItem/comments/Comments";
 import { useNavigate, useParams } from "react-router-dom";
@@ -28,13 +29,23 @@ const Video = () => {
   const [subStatus, setSubStatus] = useState(false);
   const [videoDetails, setVideoDetails] = useState(null);
   const authUser = state?.channel;
+  const [playlistVideos, setPlaylistVideos] = useState([]);
+
+  const url = new URL(window.location.href);
+  const playlistId = url.searchParams.get("playlistId");
+  const currentIndex = url.searchParams.get("index");
+
+  console.log(playlistId, currentIndex);
 
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     loadCurrentVideo(id);
-  }, [id, authUser]);
+    if (playlistId) {
+      loadPlaylistVideos(playlistId);
+    }
+  }, [id, playlistId, authUser]);
 
   const loadCurrentVideo = async () => {
     if (!id) return;
@@ -47,6 +58,19 @@ const Video = () => {
         } else {
           setSubStatus(false);
         }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const loadPlaylistVideos = async (playlistId) => {
+    try {
+      const res = await getPlaylist(playlistId);
+      if (res.status == 200) {
+        console.log(res.data);
+        const playlist = res.data;
+        setPlaylistVideos(playlist?.videos || []);
       }
     } catch (err) {
       console.log(err);
@@ -211,7 +235,46 @@ const Video = () => {
             </div>
           </div>
         </div>
-        <OtherVideos />
+        <div className="video-preview-right">
+          {playlistId && (
+            <div className="playlist-box">
+              <h4>{videoDetails?.title} Playlist</h4>
+              <ul>
+                {playlistVideos.map((video, idx) => (
+                  <li
+                    key={video.videoId}
+                    className={
+                      idx == currentIndex ? "current-video" : "playlist-video"
+                    }
+                  >
+                    <a
+                      href={`/video/${
+                        video.videoId
+                      }?playlistId=${playlistId}&index=${idx + 1}`}
+                      className="playlist-item"
+                    >
+                      <div className="playlist-thumbnail">
+                        <img
+                          src={
+                            video.imageUrl ||
+                            "https://via.placeholder.com/120x70"
+                          }
+                          alt={`Video ${idx + 1}`}
+                        />
+                      </div>
+                      <div className="playlist-info">
+                        <span className="playlist-title">
+                          {video.title || `Video ${idx + 1}`}
+                        </span>
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <OtherVideos />
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ const VideoList = () => {
   const [videos, setVideos] = useState([]);
   useEffect(() => {
     loadVideos();
-  }, []);
+  }, [videos]);
   const loadVideos = async () => {
     try {
       const res = await getVideos();
@@ -20,9 +20,9 @@ const VideoList = () => {
   };
   return (
     <div className="video-list">
-      { videos == [] ? videos.map((item, index) => (
-        <VideoCard key={index} video={item} />
-      )) : "No videos found"}
+      {videos.length > 0
+        ? videos.map((item, index) => <VideoCard key={index} video={item} />)
+        : "No videos found"}
     </div>
   );
 };

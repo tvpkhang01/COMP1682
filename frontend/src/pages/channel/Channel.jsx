@@ -1,5 +1,4 @@
 import "./Channel.css";
-import PlaylistCard from "../../components/videoItem/playlistCard/PlaylistCard";
 import avatarImg from "../../assets/avatar.png";
 import channelBanner from "../../assets/channelBanner.png";
 import { useContext, useEffect, useState } from "react";
@@ -14,6 +13,7 @@ import {
   unsubscribeChannel,
 } from "../../api/Api";
 import ChannelVideos from "./videos/ChannelVideos";
+import ChannelPlaylists from "./videos/ChannelPlaylists";
 
 const Channel = () => {
   const { id } = useParams();
@@ -30,10 +30,12 @@ const Channel = () => {
   useEffect(() => {
     console.log(tabPlaylist);
     setTabIndex(tabPlaylist ? 1 : 0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     loadCurrentChannel();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, authUser]);
 
   const loadCurrentChannel = async () => {
@@ -82,6 +84,10 @@ const Channel = () => {
     }
   };
 
+  const handleAdminPage = () => {
+    navigate(`/admin`);
+  };
+
   return (
     <div className="channel">
       <div className="channel-wrapper container">
@@ -114,6 +120,11 @@ const Channel = () => {
                 {subStatus ? "Unsubscribe" : "Subscribe"}
               </button>
             )}
+            {authUser && currentChannel?.admin == true && (
+              <button onClick={handleAdminPage}>
+                Admin Page
+              </button>
+            )}
           </div>
         </div>
         <div className="tab-wrapper">
@@ -132,13 +143,7 @@ const Channel = () => {
         </div>
         <div className="tab-content">
           {tabIndex == 0 && <ChannelVideos channelId={id} />}
-          {tabIndex == 1 && (
-            <div className="list-items">
-              {[...Array(15)].map((item, index) => (
-                <PlaylistCard key={index} />
-              ))}
-            </div>
-          )}
+          {tabIndex == 1 && <ChannelPlaylists channelId={id} />}
         </div>
       </div>
       {onEdit && (

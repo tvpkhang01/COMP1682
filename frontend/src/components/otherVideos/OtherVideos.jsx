@@ -20,7 +20,7 @@ const OtherVideos = () => {
     }
   };
   return (
-    <div className="video-preview-right">
+    <div>
       {videos.map((item, index) => (
         <VideoCard key={index} video={item} />
       ))}

@@ -13,8 +13,14 @@
 }
 
 .upload .wrapper.dark input,
-.upload .wrapper.dark textarea {
+.upload .wrapper.dark textarea,
+.upload .wrapper.dark select,
+.upload .wrapper.dark option {
   color: var(--darkwhite);
+}
+
+.upload .wrapper.dark option {
+  background-color: var(--black-2);
 }
 
 .upload .wrapper .inputs-wrapper {
@@ -34,7 +40,8 @@
 
 .upload-form input,
 .upload-form textarea,
-.upload-form .upload-image {
+.upload-form .upload-image,
+.upload-form .category {
   padding: 0.5rem 0.8rem;
   margin-bottom: 1rem;
   font-size: 15px;
@@ -55,6 +62,7 @@
   min-height: 180px;
   max-height: 350px;
 }
+
 
 .upload-form button {
   padding: 0.5rem;

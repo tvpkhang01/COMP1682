@@ -30,6 +30,19 @@ export const likeVideo = (videoId, params) =>
 export const dislikeVideo = (videoId, params) =>
   request.patch(`/video/dislike/${videoId}`, params);
 
+export const getPlaylistsByChannel = (channelId) =>
+  request.get(`/playlist/channel/${channelId}`);
+export const getPlaylist = (playlistId) => request.get(`/playlist/${playlistId}`);
+export const createPlaylist = (params) => request.post("/playlist", params);
+export const updatePlaylist = (playlistId, params) =>
+  request.patch(`/playlist/${playlistId}`, params);
+export const deletePlaylist = (playlistId) =>
+  request.delete(`/playlist/${playlistId}`);
+export const insertVideoIntoPlaylist = (playlistId, videoId) =>
+  request.patch(`/playlist/${playlistId}/insert/${videoId}`);
+export const removeVideoFromPlaylist = (playlistId, videoId) =>
+  request.patch(`/playlist/${playlistId}/remove/${videoId}`);
+
 export const uploadImage = (image) => request.post("/upload/image", image);
 export const uploadAvatar = (avatar) => request.post("/upload/avatar", avatar);
 export const uploadVideo = (video) => request.post("/upload/video", video);

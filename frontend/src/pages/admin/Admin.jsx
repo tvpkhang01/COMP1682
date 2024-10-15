@@ -4,11 +4,16 @@ import AppContext from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 const Admin = () => {
   const { state } = useContext(AppContext);
-  const adminUser = state?.auth.admin;
-  
   const navigate = useNavigate();
   useEffect(() => {
-    if (!adminUser) {
+    try {
+      const adminUser = state?.auth.admin;
+      if (!adminUser) {
+        alert("You are not admin!");
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
       alert("You are not logged in");
       navigate("/");
     }

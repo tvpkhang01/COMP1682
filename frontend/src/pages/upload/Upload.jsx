@@ -14,13 +14,23 @@ import { useNavigate } from "react-router-dom";
 
 import { FaImage, FaArrowLeft } from "react-icons/fa";
 
+const categories = [
+  "Music",
+  "Education",
+  "Sports",
+  "Gaming",
+  "News",
+  "Entertainment",
+];
+
 const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
   const { state, logoutAuth } = useContext(AppContext);
   const [video, setVideo] = useState(null);
   const [image, setImage] = useState(null);
   const [info, setInfo] = useState({
     title: selectedVideo ? selectedVideo.title : "",
-    desc: selectedVideo ? selectedVideo.description : "",
+    description: selectedVideo ? selectedVideo.description : "",
+    category: selectedVideo ? selectedVideo.category : "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +39,7 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
   const clearInputs = () => {
     setVideo(null);
     setImage(null);
-    setInfo({ title: "", desc: "" });
+    setInfo({ title: "", description: "", category: "" });
   };
 
   const handleSubmit = async (e) => {
@@ -39,15 +49,15 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
       const videoUrl = await addVideo();
       const imageUrl = await addImage();
 
-      if (selectedVideo) {
-        const data = {
-          ...selectedVideo,
-          videoUrl: videoUrl ? videoUrl : selectedVideo.videoUrl,
-          imageUrl: imageUrl ? imageUrl : selectedVideo.cover,
-          title: info.title,
-          description: info.desc,
-        };
+      const data = {
+        videoUrl: videoUrl ? videoUrl : selectedVideo?.videoUrl,
+        imageUrl: imageUrl ? imageUrl : selectedVideo?.cover,
+        title: info.title,
+        description: info.desc,
+        category: info.category,
+      };
 
+      if (selectedVideo) {
         const res = await updateVideo(selectedVideo._id, data);
         if (res.status == 200) {
           clearInputs();
@@ -56,13 +66,6 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
           onClose(false);
         }
       } else {
-        const data = {
-          videoUrl,
-          imageUrl,
-          title: info.title,
-          description: info.desc,
-        };
-        console.log(data);
         const res = await createVideo(data);
         if (res.status == 200) {
           clearInputs();
@@ -77,6 +80,8 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
         logoutAuth();
         navigate("/login");
       }
+      clearInputs();
+      setLoading(false);
     }
   };
 
@@ -99,11 +104,6 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
       }
     } catch (err) {
       console.log(err);
-      if (err.status == 401) {
-        alert("Unauthorized. Please log in again.");
-        logoutAuth();
-        navigate("/login");
-      }
     }
   };
 
@@ -121,11 +121,6 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
       }
     } catch (err) {
       console.log(err);
-      if (err.status == 401) {
-        alert("Unauthorized. Please log in again.");
-        logoutAuth();
-        navigate("/login");
-      }
     }
   };
 
@@ -186,6 +181,19 @@ const Upload = ({ selectedVideo, setSelectedVideo, onClose }) => {
                 onChange={(e) => setInfo({ ...info, desc: e.target.value })}
                 placeholder="Description"
               />
+              <select
+                value={info.category}
+                onChange={(e) => setInfo({ ...info, category: e.target.value })}
+                required
+                className="category"
+              >
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
               <button type="submit" disabled={loading}>
                 {loading
                   ? "Please wait for a minute"
