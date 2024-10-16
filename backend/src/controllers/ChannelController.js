@@ -2,7 +2,6 @@ const Channel = require("../models/Channel");
 const bcrypt = require("bcryptjs");
 
 const updateChannel = async (req, res, next) => {
-  console.log(req.params, req.channel);
   if (req.params.id === req.channel.id || req.channel.admin === true) {
     try {
       if (req.body.password) {

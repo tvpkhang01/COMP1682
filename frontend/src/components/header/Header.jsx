@@ -3,14 +3,16 @@ import Avatar from "../avatar/Avatar";
 import { useContext, useState } from "react";
 import AppContext from "../../context/AppContext";
 import "./Header.css";
+import HeaderMenu from "./menu/Menu";
+import Sider from "../sider/Sider";
 import { getAvatarUrl } from "../../api/Api";
 
 import { FiSearch } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { RiVideoAddFill } from "react-icons/ri";
-import HeaderMenu from "./menu/Menu";
-import Sider from "../sider/Sider";
+import { RiPlayListAddFill } from "react-icons/ri";
+
 
 const Header = () => {
   const { state, toggleMenu } = useContext(AppContext);
@@ -58,9 +60,14 @@ const Header = () => {
         </div>
         <div className="header-right">
           {authUser && (
-            <NavLink to="/upload" className="header-icon">
-              <RiVideoAddFill />
-            </NavLink>
+            <>
+              <NavLink to="/upload" className="header-icon">
+                <RiVideoAddFill />
+              </NavLink>
+              <NavLink to="/uplist" className="header-icon">
+                <RiPlayListAddFill />
+              </NavLink>
+            </>
           )}
 
           <div

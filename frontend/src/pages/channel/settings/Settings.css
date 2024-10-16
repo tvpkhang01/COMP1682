@@ -8,15 +8,13 @@
 .settings-wrapper {
   width: 100%;
   max-width: 500px;
-  background-color: var(--black-2);
   padding: 2rem;
-  border-radius: var(--radius-03);
+  border-radius: var(--radius-05);
   box-shadow: var(--box-shadow);
 }
 
 .settings-wrapper h2 {
   margin-bottom: 1.5rem;
-  color: var(--darkwhite);
 }
 
 .settings-form {
@@ -28,14 +26,10 @@
   padding: 0.8rem;
   margin-bottom: 1rem;
   font-size: 1rem;
-  background-color: var(--black-4);
-  border: none;
-  color: var(--darkwhite);
+  background-color: var(--white-tr03);
+  border: 1px solid var(--black-tr05);
+  color: var(--black-tr05);
   border-radius: var(--radius-03);
-}
-
-.settings-form input::placeholder {
-  color: var(--white-tr05);
 }
 
 .settings-form button {

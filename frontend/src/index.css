@@ -80,15 +80,3 @@ a {
   margin: 0 auto;
   padding: 0 2rem;
 }
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .container {
-    padding: 0 0.5rem;
-  }
-}

@@ -1,0 +1,90 @@
+.uplist {
+  padding: 100px 0;
+}
+
+.uplist .wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.uplist .wrapper h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.uplist .wrapper.dark input,
+.uplist .wrapper.dark textarea {
+  color: var(--darkwhite);
+}
+
+.uplist .wrapper.dark input::placeholder,
+.uplist .wrapper.dark textarea::placeholder {
+  color: var(--darkwhite);
+}
+
+.uplist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 20% 0; 
+}
+
+.uplist-form input,
+.uplist-form textarea {
+  padding: 0.5rem 0.8rem;
+  font-size: 15px;
+  outline: none;
+  background-color: transparent;
+  border-radius: var(--radius-03);
+  border: 2px solid var(--white-tr05);
+}
+
+.uplist-form input::placeholder,
+.uplist-form textarea::placeholder {
+  color: var(--white-tr05);
+}
+
+.uplist-form textarea {
+  resize: none;
+  min-height: 180px;
+  max-height: 350px;
+}
+
+.upload-image {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border: 2px solid var(--white-tr05);
+  border-radius: var(--radius-03);
+}
+
+.upload-image span {
+  font-size: 0.9rem;
+}
+
+.upload-image .camera-icon {
+  font-size: 1.5rem;
+}
+
+.uplist-form button {
+  padding: 0.5rem;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--darkwhite);
+  border: none;
+  border-radius: var(--radius-03);
+  background-color: var(--red);
+  cursor: pointer;
+}
+
+.uplist-form button:hover {
+  background-color: var(--darkred);
+}
+
+.uplist-form button:disabled {
+  background-color: var(--gray);
+  cursor: not-allowed;
+}

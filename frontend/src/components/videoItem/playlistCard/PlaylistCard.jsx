@@ -1,15 +1,39 @@
 /* eslint-disable react/prop-types */
 import "./PlaylistCard.css";
 import headImg from "../../../assets/headImg.png";
-import { getImageUrl } from "../../../api/Api";
+import { getImageUrl, getVideo } from "../../../api/Api";
+import { useState, useEffect } from "react";
 
 import { RiPlayList2Fill } from "react-icons/ri";
 
 const PlaylistCard = ({ playlist }) => {
   console.log(playlist);
-  const image = playlist?.imageUrl ? getImageUrl(playlist?.imageUrl) : null;
   const firstVideoId = playlist?.videos?.length > 0 ? playlist.videos[0] : null;
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (playlist?.imageUrl) {
+        setImage(getImageUrl(playlist.imageUrl));
+      } else if (firstVideoId) {
+        try {
+          const res = await getVideo(firstVideoId);
+          if (res.status == 200) {
+            if (res.data.imageUrl) {
+              setImage(getImageUrl(res.data.imageUrl));
+            }
+          }
+        } catch (error) {
+          console.error("Failed to fetch video image", error);
+        }
+      }
+    };
+
+    fetchImage();
+  }, [playlist, firstVideoId]);
+
   console.log(image);
+
   return (
     <div className="playlist-card">
       <div className="wrapper">
@@ -28,6 +52,12 @@ const PlaylistCard = ({ playlist }) => {
           className="title"
         >
           {playlist?.title || "Untitled Playlist"}
+        </a>
+        <a
+          href={`/channel/${playlist?.channelId}/playlist/${playlist?._id}`}
+          className="view"
+        >
+          View the full Playlist
         </a>
       </div>
     </div>

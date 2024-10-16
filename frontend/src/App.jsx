@@ -13,6 +13,8 @@ import { checkToken, getChannel } from "./api/Api";
 import Search from "./pages/search/Search";
 import Settings from "./pages/channel/settings/Settings";
 import Admin from "./pages/admin/Admin";
+import Uplist from "./pages/uplist/Uplist";
+import Playlist from "./pages/channel/playlist/Playlist";
 
 function App() {
   const { state, loadChannelInfos, logoutAuth } = useContext(AppContext);
@@ -29,7 +31,7 @@ function App() {
           console.log("User still authenticated, nothing to do here");
         } else if (error.status == 404) {
           console.log(
-            "User is not logging and token is not here, so nothing to do here"
+            "User is not logging and token is not here, nothing to do here"
           );
         } else {
           console.log("Other error: " + error);
@@ -73,9 +75,11 @@ function App() {
             <Route path=":id">
               <Route index element={<Channel />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="playlist/:playlistId" element={<Playlist />} />
             </Route>
           </Route>
           <Route path="/upload" element={<Upload />} />
+          <Route path="/uplist" element={<Uplist />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/*" element={<Navigate to="/" replace />} />

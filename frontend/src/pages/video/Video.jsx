@@ -12,6 +12,9 @@ import {
   subscribeChannel,
   unsubscribeChannel,
   getPlaylist,
+  getPlaylistsByChannel,
+  insertVideoIntoPlaylist,
+  removeVideoFromPlaylist,
 } from "../../api/Api";
 import Comments from "../../components/commentItem/comments/Comments";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,8 +22,9 @@ import AppContext from "../../context/AppContext";
 import dayjs from "dayjs";
 import Upload from "../upload/Upload";
 
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaCheck, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
+import { RiPlayListFill } from "react-icons/ri";
 
 const Video = () => {
   const { state, logoutAuth } = useContext(AppContext);
@@ -30,6 +34,8 @@ const Video = () => {
   const [videoDetails, setVideoDetails] = useState(null);
   const authUser = state?.channel;
   const [playlistVideos, setPlaylistVideos] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const [showPlaylists, setShowPlaylists] = useState(false);
 
   const url = new URL(window.location.href);
   const playlistId = url.searchParams.get("playlistId");
@@ -42,7 +48,10 @@ const Video = () => {
     if (playlistId) {
       loadPlaylistVideos(playlistId);
     }
-  }, [id, playlistId, authUser]);
+    if (authUser) {
+      loadPlaylists();
+    }
+  }, [id, authUser]);
 
   const loadCurrentVideo = async () => {
     if (!id) return;
@@ -50,11 +59,7 @@ const Video = () => {
       const res = await getVideo(id);
       if (res.status == 200) {
         setVideoDetails(res.data);
-        if (authUser && res.data.subscribers.includes(authUser._id)) {
-          setSubStatus(true);
-        } else {
-          setSubStatus(false);
-        }
+        setSubStatus(authUser && res.data.subscribers.includes(authUser._id));
       }
     } catch (err) {
       console.log(err);
@@ -67,15 +72,31 @@ const Video = () => {
       if (res.status == 200) {
         console.log(res.data);
         const playlist = res.data;
-        setPlaylistVideos(playlist?.videos || []);
+        setPlaylistVideos(playlist || []);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
+  const loadPlaylists = async () => {
+    try {
+      if (!authUser) return;
+      const res = await getPlaylistsByChannel(authUser._id);
+      if (res.status == 200) {
+        setPlaylists(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleLike = async () => {
-    if (!videoDetails || !authUser) return;
+    if (!videoDetails || !authUser) {
+      alert("Please login first");
+      navigate("/login");
+      return;
+    }
 
     try {
       let res = null;
@@ -87,9 +108,9 @@ const Video = () => {
       if (res?.status == 200) {
         loadCurrentVideo();
       }
-    } catch (err) {
-      console.log(err);
-      if (err.status == 401) {
+    } catch (error) {
+      console.log(error);
+      if (error.status == 401) {
         alert("Unauthorized. Please log in again.");
         logoutAuth();
         navigate("/login");
@@ -107,9 +128,9 @@ const Video = () => {
           navigate("/");
         }
       }
-    } catch (err) {
-      console.log(err);
-      if (err.status == 401) {
+    } catch (error) {
+      console.log(error);
+      if (error.status == 401) {
         alert("Unauthorized. Please log in again.");
         logoutAuth();
         navigate("/login");
@@ -118,7 +139,11 @@ const Video = () => {
   };
 
   const handleSubscribe = async () => {
-    if (!videoDetails || !authUser) return;
+    if (!videoDetails || !authUser) {
+      alert("Please login first");
+      navigate("/login");
+      return;
+    }
 
     try {
       if (!subStatus) {
@@ -133,9 +158,41 @@ const Video = () => {
         }
       }
       loadCurrentVideo();
-    } catch (err) {
-      console.log(err);
-      if (err.status == 401) {
+    } catch (error) {
+      console.log(error);
+      if (error.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
+    }
+  };
+
+  const handleAddToPlaylist = async (playlistId) => {
+    if (!videoDetails || !authUser) {
+      alert("Please login first");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      if (!videoDetails.playlists.includes(playlistId)) {
+        const res = await insertVideoIntoPlaylist(playlistId, videoDetails._id);
+        if (res.status === 200) {
+          alert("Video added to the playlist!");
+          setShowPlaylists(false);
+        }
+      } else {
+        const res = await removeVideoFromPlaylist(playlistId, videoDetails._id);
+        if (res.status === 200) {
+          alert("Video removed from the playlist!");
+          setShowPlaylists(false);
+        }
+      }
+      loadCurrentVideo();
+    } catch (error) {
+      console.log(error);
+      if (error.status == 401) {
         alert("Unauthorized. Please log in again.");
         logoutAuth();
         navigate("/login");
@@ -205,6 +262,33 @@ const Video = () => {
                     </div>
                   </>
                 )}
+                {authUser && (
+                  <div>
+                    <div
+                      className="action-item"
+                      onClick={() => setShowPlaylists(!showPlaylists)}
+                    >
+                      <RiPlayListFill />
+                    </div>
+                    {showPlaylists && (
+                      <div className="playlist-dropdown">
+                        <ul>
+                          {playlists.map((playlist) => (
+                            <li
+                              key={playlist._id}
+                              onClick={() => handleAddToPlaylist(playlist._id)}
+                            >
+                              {playlist.title}
+                              {videoDetails?.playlists.includes(
+                                playlist._id
+                              ) && <FaCheck style={{ marginLeft: "10px" }} />}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="like-wrapper">
                   <div className="action-item" onClick={handleLike}>
                     {videoDetails?.likes.includes(authUser?._id) ? (
@@ -243,9 +327,9 @@ const Video = () => {
         <div className="video-preview-right">
           {playlistId && (
             <div className="playlist-box">
-              <h4>Playlist</h4>
+              <h4>{playlistVideos?.title}</h4>
               <ul>
-                {playlistVideos.map((video, index) => (
+                {playlistVideos?.videos?.map((video, index) => (
                   <li
                     key={video}
                     className={

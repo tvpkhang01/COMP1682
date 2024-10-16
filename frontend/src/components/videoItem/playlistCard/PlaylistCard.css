@@ -57,3 +57,14 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: var(--max-lines);
 }
+
+.playlist-card .view {
+  padding: 0.3rem 0.5rem;
+  font-size: 15px;
+  font-weight: 400;
+  --max-lines: 2;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--max-lines);
+}
