@@ -23,7 +23,7 @@ const Search = () => {
   return (
     <div className="home">
       <div className="video-list">
-        {videos == [] ? videos.map((item, index) => (
+        {videos.length > 0 ? videos.map((item, index) => (
           <VideoCard key={index} video={item} />
         )) : "No videos found"}
       </div>

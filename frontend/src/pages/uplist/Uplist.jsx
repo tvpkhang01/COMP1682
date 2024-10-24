@@ -1,13 +1,18 @@
+/* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
 import "./Uplist.css";
 import AppContext from "../../context/AppContext";
-import { createPlaylist, uploadImage } from "../../api/Api"; // Assuming you have an API function for creating a playlist
+import { createPlaylist, updatePlaylist, uploadImage } from "../../api/Api";
 import { useNavigate } from "react-router-dom";
-import { FaImage } from "react-icons/fa";
+import { FaImage, FaArrowLeft } from "react-icons/fa";
 
-const Uplist = () => {
+const Uplist = ({ selectedPlaylist, setSelectedPlaylist, onClose }) => {
+  console.log(selectedPlaylist);
   const { state, logoutAuth } = useContext(AppContext);
-  const [info, setInfo] = useState({ title: "", description: "" });
+  const [info, setInfo] = useState({
+    title: selectedPlaylist ? selectedPlaylist.title : "",
+    description: selectedPlaylist ? selectedPlaylist.description : "",
+  });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -26,13 +31,24 @@ const Uplist = () => {
       const data = {
         title: info.title,
         description: info.description,
-        imageUrl: imageUrl || "",
+        imageUrl: imageUrl ? imageUrl : selectedPlaylist?.imageUrl,
       };
-      const res = await createPlaylist(data);
-      if (res.status === 200) {
-        alert("Playlist created successfully!");
-        clearInputs();
-        navigate("/");
+
+      if (selectedPlaylist) {
+        const res = await updatePlaylist(selectedPlaylist._id, data);
+        if (res.status === 200) {
+          clearInputs();
+          setSelectedPlaylist(res.data);
+          setLoading(false);
+          onClose(false);
+        }
+      } else {
+        const res = await createPlaylist(data);
+        if (res.status === 200) {
+          alert("Playlist created successfully!");
+          clearInputs();
+          navigate("/");
+        }
       }
     } catch (error) {
       console.error(error);
@@ -71,7 +87,15 @@ const Uplist = () => {
   return (
     <div className="uplist">
       <div className={`wrapper ${state?.theme} container`}>
-        <h2>Create a New Playlist</h2>
+        <h2 className="heading">
+          {selectedPlaylist && (
+            <FaArrowLeft
+              onClick={() => onClose(false)}
+              style={{ marginRight: "1rem", cursor: "pointer" }}
+            />
+          )}
+          {selectedPlaylist ? "Update Playlist" : "Create a New Playlist"}
+        </h2>
         <form className="uplist-form" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -97,7 +121,11 @@ const Uplist = () => {
             />
             <div className="upload-image">
               <FaImage className="camera-icon" />
-              {image ? `${image.name}` : <span>Select image</span>}
+              {image
+                ? `${image.name}`
+                : selectedPlaylist?.imageUrl
+                ? selectedPlaylist.imageUrl
+                : "Select image"}
             </div>
           </label>
 

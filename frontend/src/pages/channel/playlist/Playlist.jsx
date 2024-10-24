@@ -1,15 +1,27 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./Playlist.css";
-import { useEffect, useState } from "react";
-import { getPlaylist, getVideo, getImageUrl } from "../../../api/Api";
+import { useContext, useEffect, useState } from "react";
+import {
+  getPlaylist,
+  getVideo,
+  getImageUrl,
+  deletePlaylist,
+  removeVideoFromPlaylist,
+} from "../../../api/Api";
+import Uplist from "../../uplist/Uplist";
+
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import AppContext from "../../../context/AppContext";
 
 const Playlist = () => {
-  const { playlistId } = useParams();
+  const { logoutAuth } = useContext(AppContext);
+  const { id, playlistId } = useParams();
   const [playlist, setPlaylist] = useState();
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [onEdit, setOnEdit] = useState(false);
 
-  console.log(videos);
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadPlaylistInfo(playlistId);
@@ -54,28 +66,101 @@ const Playlist = () => {
       : null;
   };
 
+  const handleDelete = async () => {
+    if (!playlist) return;
+
+    try {
+      if (window.confirm("Are you sure you want to delete this?")) {
+        const res = await deletePlaylist(playlist._id);
+        if (res.status == 200) {
+          navigate(`/channel/${id}`);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.status == 401) {
+        alert("Unauthorized. Please log in again.");
+        logoutAuth();
+        navigate("/login");
+      }
+    }
+  };
+
+  const handleRemove = async (videoId) => {
+    if (!videoId) return;
+    console.log(videoId);
+    try {
+      const res = await removeVideoFromPlaylist(playlistId, videoId);
+      if (res.status == 200) {
+        loadPlaylistInfo(playlistId);
+        alert("Remove video successfully!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (onEdit && playlist)
+    return (
+      <Uplist
+        selectedPlaylist={playlist}
+        setSelectedPlaylist={setPlaylist}
+        onClose={setOnEdit}
+      />
+    );
+
   return (
     <div className="playlist">
       {loading ? (
         <div>Loading...</div>
       ) : (
         <div className="playlist-wrapper">
-          <h2>{playlist?.title}</h2>
           <div className="left">
             <div className="playlist-image">
               <img src={getPlaylistImage()} alt={playlist?.title} />
             </div>
             <div className="playlist-title">{playlist?.title}</div>
             <div className="playlist-description">{playlist?.description}</div>
+            <div className="playlist-options">
+              <button className="playlist-button">
+                <a
+                  href={`/video/${videos[0]?._id}?playlistId=${playlist._id}&index=1`}
+                >
+                  Start the playlist
+                </a>
+              </button>
+              <div className="playlist-icon" onClick={() => setOnEdit(true)}>
+                <FaEdit />
+              </div>
+              <div className="playlist-icon" onClick={handleDelete}>
+                <FaTrashAlt />
+              </div>
+            </div>
           </div>
           <div className="right">
-            <h3>Videos</h3>
             <div className="playlist-videos">
               {videos.length > 0 ? (
-                videos.map((video) => (
-                  <div key={video._id} className="video-item">
-                    <img src={getImageUrl(video.imageUrl)} alt={video.title} />
-                    <div className="video-title">{video.title}</div>
+                videos.map((video, index) => (
+                  <div key={index} className="playlist-video">
+                    <div className="video-card">
+                      <a href={`/video/${video._id}`} className="card-cover">
+                        <img
+                          src={getImageUrl(video.imageUrl)}
+                          alt="Video Image"
+                        />
+                      </a>
+                      <div className="card-details">
+                        <a href={`/video/${video._id}`} className="card-title">
+                          {video.title}
+                        </a>
+                      </div>
+                    </div>
+                    <div
+                      style={{ alignSelf: "center", cursor: "pointer" }}
+                      onClick={() => handleRemove(video._id)}
+                    >
+                      <FaTrashAlt />
+                    </div>
                   </div>
                 ))
               ) : (

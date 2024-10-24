@@ -5,9 +5,11 @@ import { getVideos } from "../../../api/Api";
 
 const VideoList = () => {
   const [videos, setVideos] = useState([]);
+
   useEffect(() => {
     loadVideos();
   }, [videos]);
+
   const loadVideos = async () => {
     try {
       const res = await getVideos();
@@ -18,6 +20,7 @@ const VideoList = () => {
       console.log(error);
     }
   };
+
   return (
     <div className="video-list">
       {videos.length > 0

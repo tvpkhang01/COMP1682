@@ -32,8 +32,6 @@ const PlaylistCard = ({ playlist }) => {
     fetchImage();
   }, [playlist, firstVideoId]);
 
-  console.log(image);
-
   return (
     <div className="playlist-card">
       <div className="wrapper">
