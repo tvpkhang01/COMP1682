@@ -1,0 +1,52 @@
+.admin-videos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 20px;
+  }
+  
+  .admin-video-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .admin-video-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .admin-video-card img {
+    width: 160px;
+    height: 90px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+  
+  .admin-video-info {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .admin-video-info h2 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  
+  .admin-video-info h3 {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .admin-video-trash-icon {
+    margin-left: auto;
+    cursor: pointer;
+  }
+  

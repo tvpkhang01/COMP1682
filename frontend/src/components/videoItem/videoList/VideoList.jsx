@@ -8,7 +8,7 @@ const VideoList = () => {
 
   useEffect(() => {
     loadVideos();
-  }, [videos]);
+  }, []);
 
   const loadVideos = async () => {
     try {

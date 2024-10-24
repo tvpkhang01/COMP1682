@@ -9,6 +9,7 @@ export const logout = (params) => request.post("/auth/logout", params);
 export const register = (params) => request.post("/auth/register", params);
 export const checkToken = () => request.post("/auth/checkToken");
 
+export const getChannels = () => request.get("/channel");
 export const getChannel = (channelId) => request.get(`channel/${channelId}`);
 export const updateChannel = (channelId, params) =>
   request.patch(`channel/${channelId}`, params);
@@ -16,6 +17,8 @@ export const subscribeChannel = (channelId, params) =>
   request.patch(`channel/subscribe/${channelId}`, params);
 export const unsubscribeChannel = (channelId, params) =>
   request.patch(`channel/unsubscribe/${channelId}`, params);
+export const deleteChannel = (channelId) =>
+  request.delete(`/channel/${channelId}`);
 
 export const getVideos = (search = "") => request.get(`/video${search}`);
 export const getVideosByChannel = (channelId) =>
@@ -32,7 +35,8 @@ export const dislikeVideo = (videoId, params) =>
 
 export const getPlaylistsByChannel = (channelId) =>
   request.get(`/playlist/channel/${channelId}`);
-export const getPlaylist = (playlistId) => request.get(`/playlist/${playlistId}`);
+export const getPlaylist = (playlistId) =>
+  request.get(`/playlist/${playlistId}`);
 export const createPlaylist = (params) => request.post("/playlist", params);
 export const updatePlaylist = (playlistId, params) =>
   request.patch(`/playlist/${playlistId}`, params);

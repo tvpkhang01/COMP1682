@@ -1,7 +1,32 @@
 .admin {
-    padding: 80px;
+  padding: 80px;
 }
 
 .admin-wrapper {
-    min-height: 100vh;
+  min-height: 100vh;
+}
+
+.admin-wrapper .tab-wrapper {
+  margin-top: 1rem;
+  padding: 0 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-bottom: 3px solid var(--white-tr02);
+}
+
+.admin-wrapper .tab-wrapper .tab-item {
+  padding: 0.5rem 1.5rem;
+  display: block;
+  cursor: pointer;
+  border-top-left-radius: var(--radius-03);
+  border-top-right-radius: var(--radius-03);
+}
+
+.admin-wrapper .tab-wrapper .tab-item.active {
+  background-color: var(--white-tr05);
+}
+
+.admin-wrapper .tab-wrapper .tab-item:hover {
+  background-color: var(--white-tr02);
 }

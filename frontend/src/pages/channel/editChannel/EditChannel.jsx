@@ -20,8 +20,6 @@ const EditChannel = ({ user, setUser, open, onClose }) => {
     description: user ? user.description : "",
   });
 
-
-
   const handleCancel = (e) => {
     e.preventDefault();
     clearInputs();

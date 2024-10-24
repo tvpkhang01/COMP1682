@@ -1,8 +1,36 @@
 const Channel = require("../models/Channel");
+const Playlist = require("../models/Playlist");
+const Video = require("../models/Video");
 const bcrypt = require("bcryptjs");
 
+const getChannels = async (req, res, next) => {
+  try {
+    const channels = await Channel.find({
+      admin: false,
+    });
+    let l_channels = [];
+    for (const l_channel of channels) {
+      const { createdAt, updatedAt, password, ...channel } = l_channel._doc;
+      l_channels.push(channel);
+    }
+    res.status(200).json(l_channels);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getChannel = async (req, res, next) => {
+  try {
+    const l_channel = await Channel.findById(req.params.id);
+    const { createdAt, updatedAt, password, ...channel } = l_channel._doc;
+    res.status(200).json(channel);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateChannel = async (req, res, next) => {
-  if (req.params.id === req.channel.id || req.channel.admin === true) {
+  if (req.params.id === req.channel.id) {
     try {
       if (req.body.password) {
         const hashPassword = bcrypt.hashSync(
@@ -26,16 +54,6 @@ const updateChannel = async (req, res, next) => {
     }
   } else {
     res.status(403).json({ message: "Cannot edit other channel" });
-  }
-};
-
-const getChannel = async (req, res, next) => {
-  try {
-    const l_channel = await Channel.findById(req.params.id);
-    const { createdAt, updatedAt, password, ...channel } = l_channel._doc;
-    res.status(200).json(channel);
-  } catch (error) {
-    next(error);
   }
 };
 
@@ -71,9 +89,44 @@ const unsubscribeChannel = async (req, res, next) => {
   }
 };
 
+const deleteChannel = async (req, res, next) => {
+  if (req.channel.admin === true) {
+    try {
+      const l_videos = await Video.find({
+        channelId: req.params.id,
+      });
+      for (const l_video of l_videos) {
+        await Video.findByIdAndDelete(l_video._id);
+      }
+      const l_playlists = await Playlist.find({
+        channelId: req.params.id,
+      });
+      for (const l_playlist of l_playlists) {
+        await Playlist.findByIdAndDelete(l_playlist._id);
+      }
+      const l_subscribers = await Channel.find({
+        subscribers: req.params.id,
+      });
+      for (const l_subscriber of l_subscribers) {
+        await Channel.findByIdAndUpdate(l_subscriber._id, {
+          $pull: { subscribers: req.params.id },
+        });
+      }
+      await Channel.findByIdAndDelete(req.params.id);
+      res.status(200).json("Channel deleted successfully");
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    res.status(403).json({ message: "Cannot delete other channel" });
+  }
+};
+
 module.exports = {
-  updateChannel,
+  getChannels,
   getChannel,
+  updateChannel,
   subscribeChannel,
   unsubscribeChannel,
+  deleteChannel,
 };

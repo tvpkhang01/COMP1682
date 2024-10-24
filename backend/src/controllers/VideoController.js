@@ -1,5 +1,6 @@
 const Video = require("../models/Video");
 const Channel = require("../models/Channel");
+const Playlist = require("../models/Playlist");
 
 const getVideos = async (req, res, next) => {
   const searchParams = req.query.search;
@@ -113,7 +114,13 @@ const deleteVideo = async (req, res, next) => {
   try {
     const l_video = await Video.findById(req.params.id);
     if (!l_video) return res.status(404).json("Video not found");
-    if (req.channel.id === l_video.channelId) {
+    if (req.channel.id === l_video.channelId || req.channel.admin == true) {
+      const playlists = await Playlist.find({ videos: l_video._id.toString() });
+      for (const playlist of playlists) {
+        await playlist.updateOne({
+          $pull: { videos: l_video._id.toString() },
+        });
+      }
       const l_channel = await Channel.findById(l_video.channelId);
       if (l_channel.videos.includes(l_video._id.toString())) {
         await l_channel.updateOne({
