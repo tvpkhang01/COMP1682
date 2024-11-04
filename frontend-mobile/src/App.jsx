@@ -64,14 +64,14 @@ function App() {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Search" component={Search} />
-          <Stack.Screen name="Video" component={Video} />
+          {/* <Stack.Screen name="Video" component={Video} />
           <Stack.Screen name="Channel" component={Channel} />
           <Stack.Screen name="Upload" component={Upload} />
           <Stack.Screen name="Uplist" component={Uplist} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Settings" component={Settings} />
-          <Stack.Screen name="Playlist" component={Playlist} />
+          <Stack.Screen name="Playlist" component={Playlist} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </AppContext.Provider>
