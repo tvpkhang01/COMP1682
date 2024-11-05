@@ -1,25 +1,23 @@
+import "react-native-url-polyfill/auto";
 import React from "react";
-import { registerRootComponent } from "expo";
 import { NavigationContainer } from "@react-navigation/native";
-import App from "./App";
+import { createStackNavigator } from "@react-navigation/stack";
+import { AppRegistry } from "react-native";
 import AppState from "./context/AppState";
-import { useFonts } from "expo-font";
+import App from "./App";
 
-function Main() {
-  const [fontsLoaded] = useFonts({
-    Roboto: require("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"),
-  });
+const Stack = createStackNavigator();
 
-  if (!fontsLoaded) {
-    return null;
-  }
+const Main = () => {
   return (
-    <NavigationContainer>
-      <AppState>
-        <App />
-      </AppState>
-    </NavigationContainer>
+    <AppState>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="App" component={App} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AppState>
   );
-}
+};
 
-registerRootComponent(Main);
+AppRegistry.registerComponent("main", () => Main);

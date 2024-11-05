@@ -1,20 +1,19 @@
 import React, { useContext, useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AppContext from "./context/AppContext";
 import { checkToken, getChannel } from "./api/Api";
 
 import Home from "./pages/home/Home";
-import Video from "./pages/video/Video";
-import Channel from "./pages/channel/Channel";
-import Upload from "./pages/upload/Upload";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/Register";
+// import Video from "./pages/video/Video";
+// import Channel from "./pages/channel/Channel";
+// import Upload from "./pages/upload/Upload";
+// import Login from "./pages/login/Login";
+// import Register from "./pages/register/Register";
 import Header from "./components/header/Header";
 import Search from "./pages/search/Search";
-import Settings from "./pages/channel/settings/Settings";
-import Uplist from "./pages/uplist/Uplist";
-import Playlist from "./pages/channel/playlist/Playlist";
+// import Settings from "./pages/channel/settings/Settings";
+// import Uplist from "./pages/uplist/Uplist";
+// import Playlist from "./pages/channel/playlist/Playlist";
 
 const Stack = createStackNavigator();
 
@@ -59,12 +58,11 @@ function App() {
 
   return (
     <AppContext.Provider value={state}>
-      <NavigationContainer>
-        <Header />
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Search" component={Search} />
-          {/* <Stack.Screen name="Video" component={Video} />
+      <Header />
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Search" component={Search} />
+        {/* <Stack.Screen name="Video" component={Video} />
           <Stack.Screen name="Channel" component={Channel} />
           <Stack.Screen name="Upload" component={Upload} />
           <Stack.Screen name="Uplist" component={Uplist} />
@@ -72,8 +70,7 @@ function App() {
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Playlist" component={Playlist} /> */}
-        </Stack.Navigator>
-      </NavigationContainer>
+      </Stack.Navigator>
     </AppContext.Provider>
   );
 }
