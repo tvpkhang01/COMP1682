@@ -19,7 +19,6 @@ const Stack = createStackNavigator();
 
 function App() {
   const { state, loadChannelInfos, logoutAuth } = useContext(AppContext);
-
   useEffect(() => {
     async function checkTokenData() {
       try {
@@ -59,7 +58,12 @@ function App() {
   return (
     <AppContext.Provider value={state}>
       <Header />
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Search" component={Search} />
         {/* <Stack.Screen name="Video" component={Video} />

@@ -6,7 +6,7 @@ import head from "../../assets/headImg.png";
 const Home = () => {
   return (
     <View style={styles.home}>
-      <View style={styles.head}>
+      {/* <View style={styles.head}>
         <Image source={head} style={styles.coverHead} />
         <View style={styles.headWrapper}>
           <Text style={styles.headingText}>
@@ -14,7 +14,7 @@ const Home = () => {
           </Text>
           <Text style={styles.welcomeText}>Welcome to my website</Text>
         </View>
-      </View>
+      </View> */}
       <VideoList />
     </View>
   );

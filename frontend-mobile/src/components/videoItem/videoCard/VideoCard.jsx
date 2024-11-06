@@ -3,8 +3,10 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Avatar from "../../avatar/Avatar";
 import { getAvatarUrl, getImageUrl } from "../../../api/Api";
 import dayjs from "dayjs";
+import { useNavigation } from "@react-navigation/native";
 
-const VideoCard = ({ video, navigation }) => {
+const VideoCard = ({ video }) => {
+  const navigation = useNavigation();
   const avatar = getAvatarUrl(video?.avatarUrl);
   const image = getImageUrl(video?.imageUrl);
 

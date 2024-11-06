@@ -1,11 +1,19 @@
 import React, { useContext, useState } from "react";
-import { View, TextInput, TouchableOpacity, Text, Image } from "react-native";
+import {
+  Platform,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  Image,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AppContext from "../../context/AppContext";
 import { getAvatarUrl } from "../../api/Api";
 
 const Header = () => {
+  console.log(Platform.OS);
   const { state, toggleMenu } = useContext(AppContext);
   const [onSearch, setOnSearch] = useState("");
   const [onMenu, setOnMenu] = useState(false);
@@ -31,6 +39,7 @@ const Header = () => {
           <TouchableOpacity onPress={toggleMenu}>
             <Icon name="bars" size={24} color="black" />
           </TouchableOpacity>
+          
           <TouchableOpacity
             onPress={() => navigation.navigate("Home")}
             style={styles.logo}
@@ -92,9 +101,9 @@ const styles = {
   header: {
     height: 70,
     width: "100%",
-    position: "absolute",
     top: 0,
     paddingHorizontal: 20,
+    paddingTop: Platform.OS === "android" ? 50 : 0,
     zIndex: 200,
   },
   dark: {

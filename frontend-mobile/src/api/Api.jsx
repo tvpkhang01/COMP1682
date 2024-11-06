@@ -1,105 +1,97 @@
 import axios from "axios";
+import queryString from "query-string";
 import { API_BASE_URL } from "@env";
 
-const request = axios.create({
+console.log(API_BASE_URL);
+
+const application = axios.create({
   baseURL: API_BASE_URL,
+  headers: {
+    "content-type": "application/json",
+  },
+  paramsSerializer: (params) => queryString.stringify(params),
   withCredentials: true,
 });
 
-export const login = (params) => request.post("/auth/login", params);
-export const logout = (params) => request.post("/auth/logout", params);
-export const register = (params) => request.post("/auth/register", params);
-export const checkToken = () => request.post("/auth/checkToken");
+// const applicationNoAuth = axios.create({
+//   baseURL: API_BASE_URL,
+//   headers: {
+//     "content-type": "application/json",
+//   },
+//   paramsSerializer: (params) => queryString.stringify(params),
+//   withCredentials: true,
+// });
 
-export const getChannels = () => request.get("/channel");
-export const getChannel = (channelId) => request.get(`channel/${channelId}`);
-export const updateChannel = (channelId, params) =>
-  request.patch(`channel/${channelId}`, params);
-export const subscribeChannel = (channelId, params) =>
-  request.patch(`channel/subscribe/${channelId}`, params);
-export const unsubscribeChannel = (channelId, params) =>
-  request.patch(`channel/unsubscribe/${channelId}`, params);
-export const deleteChannel = (channelId) =>
-  request.delete(`/channel/${channelId}`);
+const formData = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "content-type": "multipart/form-data",
+  },
+  withCredentials: true,
+});
 
-export const getVideos = (search = "") => request.get(`/video${search}`);
-export const getVideosByChannel = (channelId) =>
-  request.get(`/video/channel/${channelId}`);
-export const getVideo = (videoId) => request.get(`/video/${videoId}`);
-export const createVideo = (params) => request.post("/video", params);
-export const updateVideo = (videoId, params) =>
-  request.patch(`/video/${videoId}`, params);
-export const deleteVideo = (videoId) => request.delete(`/video/${videoId}`);
-export const likeVideo = (videoId, params) =>
-  request.patch(`/video/like/${videoId}`, params);
-export const dislikeVideo = (videoId, params) =>
-  request.patch(`/video/dislike/${videoId}`, params);
+export const login = (params) => application.post("/auth/login", params);
+export const logout = (params) => application.post("/auth/logout", params);
+export const register = (params) => application.post("/auth/register", params);
+export const checkToken = () => application.post("/auth/checkToken");
 
-export const getPlaylistsByChannel = (channelId) =>
-  request.get(`/playlist/channel/${channelId}`);
-export const getPlaylist = (playlistId) =>
-  request.get(`/playlist/${playlistId}`);
-export const createPlaylist = (params) => request.post("/playlist", params);
-export const updatePlaylist = (playlistId, params) =>
-  request.patch(`/playlist/${playlistId}`, params);
-export const deletePlaylist = (playlistId) =>
-  request.delete(`/playlist/${playlistId}`);
-export const insertVideoIntoPlaylist = (playlistId, videoId) =>
-  request.patch(`/playlist/${playlistId}/insert/${videoId}`);
-export const removeVideoFromPlaylist = (playlistId, videoId) =>
-  request.patch(`/playlist/${playlistId}/remove/${videoId}`);
+export const getChannels = () => application.get("/channel");
+export const getChannel = (channelId) => application.get(`/channel/${channelId}`);
+export const updateChannel = (channelId, params) => application.patch(`/channel/${channelId}`, params);
+export const subscribeChannel = (channelId, params) => application.patch(`/channel/subscribe/${channelId}`, params);
+export const unsubscribeChannel = (channelId, params) => application.patch(`/channel/unsubscribe/${channelId}`, params);
+export const deleteChannel = (channelId) => application.delete(`/channel/${channelId}`);
+
+export const getVideos = (search = "") => application.get(`/video${search}`);
+export const getVideosByChannel = (channelId) => application.get(`/video/channel/${channelId}`);
+export const getVideo = (videoId) => application.get(`/video/${videoId}`);
+export const createVideo = (params) => formData.post("/video", params);
+export const updateVideo = (videoId, params) => formData.patch(`/video/${videoId}`, params);
+export const deleteVideo = (videoId) => application.delete(`/video/${videoId}`);
+export const likeVideo = (videoId, params) => application.patch(`/video/like/${videoId}`, params);
+export const dislikeVideo = (videoId, params) => application.patch(`/video/dislike/${videoId}`, params);
 
 export const uploadImage = (image) => {
-  const formData = new FormData();
-  formData.append("image", {
+  const formDataData = new FormData();
+  formDataData.append("image", {
     uri: image.uri,
     name: image.name,
     type: image.type,
   });
-  return request.post("/upload/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return formData.post("/upload/image", formDataData);
 };
 
 export const uploadAvatar = (avatar) => {
-  const formData = new FormData();
-  formData.append("avatar", {
+  const formDataData = new FormData();
+  formDataData.append("avatar", {
     uri: avatar.uri,
     name: avatar.name,
     type: avatar.type,
   });
-  return request.post("/upload/avatar", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return formData.post("/upload/avatar", formDataData);
 };
 
 export const uploadVideo = (video) => {
-  const formData = new FormData();
-  formData.append("video", {
+  const formDataData = new FormData();
+  formDataData.append("video", {
     uri: video.uri,
     name: video.name,
     type: video.type,
   });
-  return request.post("/upload/video", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return formData.post("/upload/video", formDataData);
 };
 
 export const uploadBanner = (banner) => {
-  const formData = new FormData();
-  formData.append("banner", {
+  const formDataData = new FormData();
+  formDataData.append("banner", {
     uri: banner.uri,
     name: banner.name,
     type: banner.type,
   });
-  return request.post("/upload/banner", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return formData.post("/upload/banner", formDataData);
 };
 
-export const getAvatarUrl = (avatar) =>
-  `${API_BASE_URL}/media/avatar/${avatar}`;
-export const getBannerUrl = (banner) =>
-  `${API_BASE_URL}/media/banner/${banner}`;
+export const getAvatarUrl = (avatar) => `${API_BASE_URL}/media/avatar/${avatar}`;
+export const getBannerUrl = (banner) => `${API_BASE_URL}/media/banner/${banner}`;
 export const getImageUrl = (image) => `${API_BASE_URL}/media/image/${image}`;
 export const getVideoUrl = (video) => `${API_BASE_URL}/media/video/${video}`;
