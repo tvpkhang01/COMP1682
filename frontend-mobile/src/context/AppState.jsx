@@ -10,20 +10,39 @@ const initState = {
   channel: null,
 };
 
-const loadInitialState = async () => {
+const getTheme = async () => {
   try {
     const theme = await AsyncStorage.getItem("theme");
-    const auth = await AsyncStorage.getItem("auth");
-
-    return {
-      theme: theme ? JSON.parse(theme) : "dark",
-      auth: auth ? JSON.parse(auth) : null,
-      onMenu: false,
-      channel: null,
-    };
+    return theme ? JSON.parse(theme) : "dark";
   } catch (error) {
-    console.error("Error loading initial state:", error);
-    return initState;
+    console.error("Error getting theme:", error);
+    return "dark";
+  }
+};
+
+const getAuth = async () => {
+  try {
+    const auth = await AsyncStorage.getItem("auth");
+    return auth ? JSON.parse(auth) : null;
+  } catch (error) {
+    console.error("Error getting auth:", error);
+    return null;
+  }
+};
+
+const storeTheme = async (value) => {
+  try {
+    await AsyncStorage.setItem("theme", JSON.stringify(value));
+  } catch (error) {
+    console.error("Error storing theme:", error);
+  }
+};
+
+const storeAuth = async (value) => {
+  try {
+    await AsyncStorage.setItem("auth", JSON.stringify(value));
+  } catch (error) {
+    console.error("Error storing auth:", error);
   }
 };
 
@@ -31,26 +50,28 @@ const AppState = (props) => {
   const [state, dispatch] = useReducer(appReducer, initState);
 
   useEffect(() => {
-    const initializeState = async () => {
-      const initialState = await loadInitialState();
-      dispatch({ type: "SET_INITIAL_STATE", payload: initialState });
+    const loadInitialData = async () => {
+      const theme = await getTheme();
+      const auth = await getAuth();
+      dispatch({ type: "SET_THEME", payload: theme });
+      dispatch({ type: "LOGIN", payload: auth });
     };
-
-    initializeState();
+    loadInitialData();
   }, []);
 
   useEffect(() => {
-    AsyncStorage.setItem("theme", JSON.stringify(state.theme));
+    storeTheme(state.theme);
   }, [state.theme]);
 
   useEffect(() => {
-    AsyncStorage.setItem("auth", JSON.stringify(state.auth));
+    storeAuth(state.auth);
   }, [state.auth]);
 
   const toggleTheme = () => {
+    const newTheme = state.theme === "dark" ? "light" : "dark";
     dispatch({
       type: "SET_THEME",
-      payload: state.theme === "dark" ? "light" : "dark",
+      payload: newTheme,
     });
   };
 

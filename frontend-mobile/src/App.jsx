@@ -55,17 +55,27 @@ function App() {
     }
   };
 
+  const renderScreenWithHeader = (ScreenComponent) => (props) =>
+    (
+      <>
+        <Header />
+        <ScreenComponent {...props} />
+      </>
+    );
+
   return (
-    <AppContext.Provider value={state}>
-      <Header />
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
           headerShown: false,
+          gestureEnabled: false,
         }}
       >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Search" component={Search} />
+        <Stack.Screen name="Home" component={renderScreenWithHeader(Home)} />
+        <Stack.Screen
+          name="Search"
+          component={renderScreenWithHeader(Search)}
+        />
         {/* <Stack.Screen name="Video" component={Video} />
           <Stack.Screen name="Channel" component={Channel} />
           <Stack.Screen name="Upload" component={Upload} />
@@ -75,7 +85,6 @@ function App() {
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Playlist" component={Playlist} /> */}
       </Stack.Navigator>
-    </AppContext.Provider>
   );
 }
 

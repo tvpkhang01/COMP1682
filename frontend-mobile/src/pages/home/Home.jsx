@@ -1,31 +1,29 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import VideoList from "../../components/videoItem/videoList/VideoList";
-import head from "../../assets/headImg.png";
+
 
 const Home = () => {
   return (
-    <View style={styles.home}>
-      {/* <View style={styles.head}>
-        <Image source={head} style={styles.coverHead} />
-        <View style={styles.headWrapper}>
-          <Text style={styles.headingText}>
-            My videos, my community, my stage.
-          </Text>
-          <Text style={styles.welcomeText}>Welcome to my website</Text>
-        </View>
-      </View> */}
-      <VideoList />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.home}>
+        <VideoList />
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 10,
+  },
   home: {
+    flex: 1,
     width: "100%",
     minHeight: "100%",
     paddingHorizontal: 20,
-    paddingTop: 100,
+    marginTop: 10,
     flexDirection: "column",
   },
   head: {
