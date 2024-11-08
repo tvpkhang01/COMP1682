@@ -1,8 +1,9 @@
 import { useState, useContext, useEffect } from "react";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import "./Settings.css";
 import AppContext from "../../../context/AppContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { updateChannel } from "../../../api/Api"; // Import the update function
+import { updateChannel, addCoin } from "../../../api/Api";
 
 const Settings = () => {
   const { id } = useParams();
@@ -55,11 +56,58 @@ const Settings = () => {
     }
   };
 
+  const handleAddCoin = async () => {
+    try {
+      const response = await addCoin(id);
+      if (response.status === 200) {
+        alert("Coins added successfully");
+      }
+    } catch (error) {
+      console.error("Failed to add coins:", error);
+      alert("Failed to add coins");
+    }
+  };
+
   return (
     <div className="settings">
       <div className="settings-wrapper">
         <h2>Settings</h2>
+        <p>Coins: {state?.channel?.coins}</p>
+        <div>
+          <h2>Add coins</h2>
+          <PayPalScriptProvider
+            options={{
+              "client-id":
+                "Ad_4XcWIE7rcMN7-uzCxM2B7pAxxAzw4cZsN7rgAVMSLE74VyKCOMPkNwx9bIkKFAjNg14-8GqS4QkYI",
+            }}
+          >
+            <PayPalButtons
+              style={{ layout: "vertical" }}
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: "1.00",
+                      },
+                    },
+                  ],
+                });
+              }}
+              onApprove={(data, actions) => {
+                return actions.order.capture().then(() => {
+                  handleAddCoin();
+                });
+              }}
+              onError={(err) => {
+                console.error("PayPal payment failed:", err);
+                alert("PayPal payment failed. Please try again.");
+              }}
+            />
+          </PayPalScriptProvider>
+        </div>
         <form className="settings-form" onSubmit={handleSubmit}>
+          <h2>Change Password</h2>
           <input
             type="password"
             name="newPassword"

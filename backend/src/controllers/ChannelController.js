@@ -77,13 +77,53 @@ const subscribeChannel = async (req, res, next) => {
 
 const unsubscribeChannel = async (req, res, next) => {
   try {
-    await Channel.findByIdAndUpdate(req.channel.id, {
-      $pull: { subscriptions: req.params.id },
-    });
-    await Channel.findByIdAndUpdate(req.params.id, {
-      $pull: { subscribers: req.channel.id },
-    });
+    await Channel.findByIdAndUpdate(
+      req.channel.id,
+      {
+        $pull: { subscriptions: req.params.id },
+      },
+      { new: true }
+    );
+    await Channel.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: { subscribers: req.channel.id },
+      },
+      { new: true }
+    );
     res.status(200).json("Unsubcription successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+const addCoin = async (req, res, next) => {
+  try {
+    await Channel.findByIdAndUpdate(
+      req.channel.id,
+      { $inc: { coins: 100 } },
+      { new: true }
+    );
+    res.status(200).json("Add coin successfully");
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+const donateCoin = async (req, res, next) => {
+  try {
+    await Channel.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { coins: 100 } },
+      { new: true }
+    );
+    await Channel.findByIdAndUpdate(
+      req.channel.id,
+      { $inc: { coins: -100 } },
+      { new: true }
+    );
+    res.status(200).json("Donate coin successfully");
   } catch (error) {
     next(error);
   }
@@ -129,4 +169,6 @@ module.exports = {
   subscribeChannel,
   unsubscribeChannel,
   deleteChannel,
+  addCoin,
+  donateCoin,
 };

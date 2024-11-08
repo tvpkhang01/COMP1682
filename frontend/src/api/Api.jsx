@@ -17,6 +17,10 @@ export const subscribeChannel = (channelId, params) =>
   request.patch(`channel/subscribe/${channelId}`, params);
 export const unsubscribeChannel = (channelId, params) =>
   request.patch(`channel/unsubscribe/${channelId}`, params);
+export const addCoin = (channelId) =>
+  request.patch(`channel/addCoin/${channelId}`);
+export const donateCoin = (channelId, params) =>
+  request.patch(`channel/donateCoin/${channelId}`, params);
 export const deleteChannel = (channelId) =>
   request.delete(`/channel/${channelId}`);
 

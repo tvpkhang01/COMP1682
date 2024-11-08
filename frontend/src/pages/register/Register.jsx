@@ -36,12 +36,12 @@ const Register = () => {
       setErrMessage("All fields are required");
       return;
     }
-    console.log({ email, user, pass });
     try {
-      const res = await register({name: user, email, password: pass});
-      if(res.status == 200) {
-        navigate("/login");
+      const res = await register({ name: user, email, password: pass });
+      if (res.status == 201) {
+        alert("User registered successfully");
         handleClear();
+        navigate("/login");
       }
     } catch (err) {
       console.log(err);

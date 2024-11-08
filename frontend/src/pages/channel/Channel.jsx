@@ -11,6 +11,7 @@ import {
   getBannerUrl,
   subscribeChannel,
   unsubscribeChannel,
+  donateCoin,
 } from "../../api/Api";
 import ChannelVideos from "./videos/ChannelVideos";
 import ChannelPlaylists from "./videos/ChannelPlaylists";
@@ -30,12 +31,12 @@ const Channel = () => {
   useEffect(() => {
     console.log(tabPlaylist);
     setTabIndex(tabPlaylist ? 1 : 0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     loadCurrentChannel();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, authUser]);
 
   const loadCurrentChannel = async () => {
@@ -84,6 +85,26 @@ const Channel = () => {
     }
   };
 
+  const handleDonate = async () => {
+    if (authUser.coins >= 100) {
+      try {
+        const res = await donateCoin(currentChannel._id);
+        if (res.status === 200) {
+          alert("Donation successful!");
+          loadCurrentChannel();
+        } else {
+          alert("Failed to donate coins. Please try again.");
+        }
+      } catch (err) {
+        console.error("Error during donation:", err);
+        alert("An error occurred. Please try again later.");
+      }
+    } else {
+      alert("Insufficient coins. Please add more coins to donate.");
+    }
+  };
+  
+
   const handleAdminPage = () => {
     navigate(`/admin`);
   };
@@ -93,13 +114,21 @@ const Channel = () => {
       <div className="channel-wrapper container">
         <div className="banner">
           <img
-            src={authUser ? getBannerUrl(authUser.bannerUrl) : channelBanner}
+            src={
+              currentChannel
+                ? getBannerUrl(currentChannel.bannerUrl)
+                : channelBanner
+            }
             alt="banner"
           />
         </div>
         <div className="infos">
           <img
-            src={authUser ? getAvatarUrl(authUser.avatarUrl) : avatarImg}
+            src={
+              currentChannel
+                ? getAvatarUrl(currentChannel.avatarUrl)
+                : avatarImg
+            }
             alt="avatar"
             className="avatar"
           />
@@ -116,14 +145,15 @@ const Channel = () => {
             {authUser && currentChannel?._id == authUser?._id ? (
               <button onClick={() => setOnEdit(true)}>Edit Channel</button>
             ) : (
-              <button onClick={handleSubscribe}>
-                {subStatus ? "Unsubscribe" : "Subscribe"}
-              </button>
+              <>
+                <button onClick={handleSubscribe}>
+                  {subStatus ? "Unsubscribe" : "Subscribe"}
+                </button>
+                <button onClick={handleDonate}>Donate</button>
+              </>
             )}
             {authUser && currentChannel?.admin == true && (
-              <button onClick={handleAdminPage}>
-                Admin Page
-              </button>
+              <button onClick={handleAdminPage}>Admin Page</button>
             )}
           </div>
         </div>

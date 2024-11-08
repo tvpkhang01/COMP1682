@@ -13,15 +13,6 @@ const application = axios.create({
   withCredentials: true,
 });
 
-// const applicationNoAuth = axios.create({
-//   baseURL: API_BASE_URL,
-//   headers: {
-//     "content-type": "application/json",
-//   },
-//   paramsSerializer: (params) => queryString.stringify(params),
-//   withCredentials: true,
-// });
-
 const formData = axios.create({
   baseURL: API_BASE_URL,
   headers: {

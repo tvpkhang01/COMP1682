@@ -14,7 +14,6 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AppContext from "../../context/AppContext";
 import { getAvatarUrl } from "../../api/Api";
-import HeaderMenu from "./menu/Menu";
 import Sider from "../sider/Sider";
 
 const Header = () => {
