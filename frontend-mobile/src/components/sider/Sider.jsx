@@ -2,16 +2,25 @@ import React, { useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AppContext from "../../context/AppContext";
-import { FontAwesome5 } from "react-native-vector-icons";
 
 const Sider = () => {
-  const { state, toggleTheme, toggleMenu } = useContext(AppContext);
+  const { state, toggleTheme, toggleMenu, logoutAuth } = useContext(AppContext);
   const authUser = state?.auth;
   const navigation = useNavigation();
 
   const handleNavigation = (route) => {
     toggleMenu();
     navigation.navigate(route);
+  };
+
+  const handleChannel = (route, channel) => {
+    toggleMenu();
+    navigation.navigate(route, channel);
+  }
+
+  const handleLogout = () => {
+    logoutAuth();
+    navigation.navigate("Home");
   };
 
   return (
@@ -33,7 +42,6 @@ const Sider = () => {
               onPress={() => handleNavigation("Home")}
               style={styles.link}
             >
-              <FontAwesome5 name="home" size={20} style={styles.icon} />
               <Text style={styles.text}>Home Page</Text>
             </TouchableOpacity>
 
@@ -41,22 +49,31 @@ const Sider = () => {
               <>
                 <View style={styles.separator} />
                 <TouchableOpacity
-                  onPress={() => handleNavigation("Channel")}
+                  onPress={() => handleChannel("Channel", { id: authUser?.id})}
                   style={styles.link}
                 >
-                  <FontAwesome5
-                    name="play-circle"
-                    size={20}
-                    style={styles.icon}
-                  />
                   <Text style={styles.text}>My Channel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Upload")}
+                  style={styles.link}
+                >
+                  <Text style={styles.text}>Upload</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Uplist")}
+                  style={styles.link}
+                >
+                  <Text style={styles.text}>Uplist</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => handleNavigation("Settings")}
                   style={styles.link}
                 >
-                  <FontAwesome5 name="cog" size={20} style={styles.icon} />
                   <Text style={styles.text}>Settings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleLogout} style={styles.link}>
+                  <Text style={styles.text}>Logout</Text>
                 </TouchableOpacity>
               </>
             )}
@@ -76,7 +93,6 @@ const Sider = () => {
             <View style={styles.separator} />
 
             <TouchableOpacity onPress={toggleTheme} style={styles.link}>
-              <FontAwesome5 name="adjust" size={20} style={styles.icon} />
               <Text style={styles.text}>
                 {state?.theme == "dark" ? "Light mode" : "Dark mode"}
               </Text>

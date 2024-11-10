@@ -2,7 +2,6 @@ import React from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import VideoList from "../../components/videoItem/videoList/VideoList";
 
-
 const Home = () => {
   return (
     <SafeAreaView style={styles.container}>

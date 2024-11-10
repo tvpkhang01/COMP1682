@@ -64,24 +64,13 @@ const Header = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.iconContainer}>
+        {/* <View style={styles.iconContainer}>
           {authUser && (
             <>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Upload")}
-                style={styles.iconButton}
-              >
-                <Ionicons name="videocam" size={26} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Uplist")}
-                style={styles.iconButton}
-              >
-                <Ionicons name="list" size={26} color="black" />
-              </TouchableOpacity>
+              
             </>
           )}
-        </View>
+        </View> */}
         <Sider />
       </View>
     </SafeAreaView>
