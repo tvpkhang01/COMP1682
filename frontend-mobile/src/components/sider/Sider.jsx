@@ -13,7 +13,7 @@ const Sider = () => {
     navigation.navigate(route);
   };
 
-  const handleChannel = (route, channel) => {
+  const handleNavigationWithChannelId = (route, channel) => {
     toggleMenu();
     navigation.navigate(route, channel);
   }
@@ -49,25 +49,13 @@ const Sider = () => {
               <>
                 <View style={styles.separator} />
                 <TouchableOpacity
-                  onPress={() => handleChannel("Channel", { id: authUser?.id})}
+                  onPress={() => handleNavigationWithChannelId("Channel", { id: authUser?.id})}
                   style={styles.link}
                 >
                   <Text style={styles.text}>My Channel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("Upload")}
-                  style={styles.link}
-                >
-                  <Text style={styles.text}>Upload</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Uplist")}
-                  style={styles.link}
-                >
-                  <Text style={styles.text}>Uplist</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleNavigation("Settings")}
+                  onPress={() => handleNavigationWithChannelId("Settings", { id: authUser?.id})}
                   style={styles.link}
                 >
                   <Text style={styles.text}>Settings</Text>

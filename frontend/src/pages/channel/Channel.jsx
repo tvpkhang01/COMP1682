@@ -115,7 +115,7 @@ const Channel = () => {
         <div className="banner">
           <img
             src={
-              currentChannel
+              currentChannel?.bannerUrl
                 ? getBannerUrl(currentChannel.bannerUrl)
                 : channelBanner
             }
@@ -125,7 +125,7 @@ const Channel = () => {
         <div className="infos">
           <img
             src={
-              currentChannel
+              currentChannel?.avatarUrl
                 ? getAvatarUrl(currentChannel.avatarUrl)
                 : avatarImg
             }

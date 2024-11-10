@@ -14,6 +14,8 @@ import Search from "./pages/search/Search";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Channel from "./pages/channel/Channel";
+import Settings from "./pages/channel/settings/Settings";
+import Video from "./pages/video/Video";
 // import Settings from "./pages/channel/settings/Settings";
 // import Uplist from "./pages/uplist/Uplist";
 // import Playlist from "./pages/channel/playlist/Playlist";
@@ -67,28 +69,30 @@ function App() {
     );
 
   return (
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-        }}
-      >
-        <Stack.Screen name="Home" component={renderScreenWithHeader(Home)} />
-        <Stack.Screen name="Search" component={renderScreenWithHeader(Search)}
-        />
-        <Stack.Screen name="Login" component={renderScreenWithHeader(Login)} />
-        <Stack.Screen name="Register" component={renderScreenWithHeader(Register)} />
-        <Stack.Screen name="Channel" component={renderScreenWithHeader(Channel)} />
-        {/* <Stack.Screen name="Video" component={Video} />
-          
-          <Stack.Screen name="Upload" component={Upload} />
-          <Stack.Screen name="Uplist" component={Uplist} />
-          
-          
-          <Stack.Screen name="Settings" component={Settings} />
-          <Stack.Screen name="Playlist" component={Playlist} /> */}
-      </Stack.Navigator>
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+      }}
+    >
+      <Stack.Screen name="Home" component={renderScreenWithHeader(Home)} />
+      <Stack.Screen name="Search" component={renderScreenWithHeader(Search)} />
+      <Stack.Screen name="Login" component={renderScreenWithHeader(Login)} />
+      <Stack.Screen
+        name="Register"
+        component={renderScreenWithHeader(Register)}
+      />
+      <Stack.Screen
+        name="Channel"
+        component={renderScreenWithHeader(Channel)}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={renderScreenWithHeader(Settings)}
+      />
+      <Stack.Screen name="Video" component={renderScreenWithHeader(Video)} />
+    </Stack.Navigator>
   );
 }
 
