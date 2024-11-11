@@ -39,7 +39,7 @@ function App() {
       }
     }
     checkTokenData();
-  }, []);
+  }, [state]);
 
   useEffect(() => {
     getChannelInfos();
@@ -57,7 +57,6 @@ function App() {
     }
   };
 
-  console.log(state);
   return (
     <div className={`app ${state?.theme}`}>
       <Header />

@@ -200,6 +200,14 @@ const Video = () => {
     }
   };
 
+  const handleChannelClick = () => {
+    navigate(`/channel/${videoDetails?.channelId}`);
+  };
+
+  const handlePlaylistVideoClick = (videoId, index) => {
+    navigate(`/video/${videoId}?playlistId=${playlistId}&index=${index + 1}`);
+  };
+
   if (onEdit && videoDetails)
     return (
       <Upload
@@ -209,7 +217,6 @@ const Video = () => {
       />
     );
 
-  console.log(videoDetails);
   return (
     <div className="video-preview">
       <div className="video-preview-wrapper container">
@@ -219,10 +226,7 @@ const Video = () => {
           <div className="video-preview-infos">
             <div className="channel-infos">
               <div className="left">
-                <a
-                  href={`/channel/${videoDetails?.channelId}`}
-                  className="avatar-wrapper"
-                >
+                <div className="avatar-wrapper" onClick={handleChannelClick}>
                   <Avatar
                     size={35}
                     src={getAvatarUrl(videoDetails?.avatarUrl)}
@@ -235,13 +239,9 @@ const Video = () => {
                         : "subscriber"
                     }`}</span>
                   </div>
-                </a>
+                </div>
                 {videoDetails?.channelId == authUser?._id ? (
-                  <button>
-                    <a href={`/channel/${videoDetails?.channelId}`}>
-                      View Channel
-                    </a>
-                  </button>
+                  <button onClick={handleChannelClick}>View Channel</button>
                 ) : (
                   <button onClick={handleSubscribe}>
                     {subStatus ? "Unsubscribe" : "Subscribe"}
@@ -338,18 +338,16 @@ const Video = () => {
                         : "playlist-video"
                     }
                   >
-                    <a
-                      href={`/video/${video}?playlistId=${playlistId}&index=${
-                        index + 1
-                      }`}
+                    <div
                       className="playlist-item"
+                      onClick={() => handlePlaylistVideoClick(video, index)}
                     >
                       <div className="playlist-info">
                         <span className="playlist-title">
                           {video.title || `Video ${index + 1}`}
                         </span>
                       </div>
-                    </a>
+                    </div>
                   </li>
                 ))}
               </ul>

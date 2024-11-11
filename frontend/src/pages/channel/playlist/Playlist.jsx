@@ -100,6 +100,16 @@ const Playlist = () => {
     }
   };
 
+  const handleStartPlaylist = () => {
+    if (videos.length > 0 && playlist) {
+      navigate(`/video/${videos[0]?._id}?playlistId=${playlist._id}&index=1`);
+    }
+  };
+
+  const handleVideoClick = (videoId) => {
+    navigate(`/video/${videoId}`);
+  };
+
   if (onEdit && playlist)
     return (
       <Uplist
@@ -122,12 +132,8 @@ const Playlist = () => {
             <div className="playlist-title">{playlist?.title}</div>
             <div className="playlist-description">{playlist?.description}</div>
             <div className="playlist-options">
-              <button className="playlist-button">
-                <a
-                  href={`/video/${videos[0]?._id}?playlistId=${playlist._id}&index=1`}
-                >
-                  Start the playlist
-                </a>
+              <button className="playlist-button" onClick={handleStartPlaylist}>
+                Start the playlist
               </button>
               <div className="playlist-icon" onClick={() => setOnEdit(true)}>
                 <FaEdit />
@@ -143,16 +149,22 @@ const Playlist = () => {
                 videos.map((video, index) => (
                   <div key={index} className="playlist-video">
                     <div className="video-card">
-                      <a href={`/video/${video._id}`} className="card-cover">
+                      <div
+                        className="card-cover"
+                        onClick={() => handleVideoClick(video._id)}
+                      >
                         <img
                           src={getImageUrl(video.imageUrl)}
                           alt="Video Image"
                         />
-                      </a>
+                      </div>
                       <div className="card-details">
-                        <a href={`/video/${video._id}`} className="card-title">
+                        <div
+                          className="card-title"
+                          onClick={() => handleVideoClick(video._id)}
+                        >
                           {video.title}
-                        </a>
+                        </div>
                       </div>
                     </div>
                     <div

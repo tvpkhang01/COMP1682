@@ -3,30 +3,39 @@ import "./VideoCard.css";
 import Avatar from "../../avatar/Avatar";
 import { getAvatarUrl, getImageUrl } from "../../../api/Api";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const VideoCard = ({ video }) => {
   const avatar = getAvatarUrl(video?.avatarUrl);
   const image = getImageUrl(video?.imageUrl);
+  const navigate = useNavigate();
+
+  const handleVideoClick = () => {
+    navigate(`/video/${video?._id}`);
+  };
+
+  const handleChannelClick = () => {
+    navigate(`/channel/${video?.channelId}`);
+  };
+
   return (
-    <div className="video-card">
-      <a href={`/video/${video?._id}`} className="card-cover">
+    <div className="video-card" onClick={handleVideoClick}>
+      <div className="card-cover">
         <img src={image} alt="Video Image" />
-      </a>
+      </div>
       <div className="card-details">
-        <a href={`/video/${video?._id}`} className="card-title">
-        {video?.title}
-        </a>
+        <div className="card-title">{video?.title}</div>
         <div className="card-infos">
-          <a href={`/channel/${video?.channelId}`} className="card-profile">
+          <div className="card-profile" onClick={handleChannelClick}>
             <Avatar src={video?.avatarUrl ? avatar : ""} size={24} />
-          </a>
-          <a href={`/channel/${video?.channelId}`} className="card-channel">
-          {video?.name}
-          </a>
+          </div>
+          <div className="card-channel" onClick={handleChannelClick}>
+            {video?.name}
+          </div>
           <span className="card-views">{`${video?.views} views`}</span>
-          <span className="timeline">{dayjs(
-                video?.createdAt
-              ).format("MMM D, YYYY")}</span>
+          <span className="timeline">
+            {dayjs(video?.createdAt).format("MMM D, YYYY")}
+          </span>
         </div>
       </div>
     </div>

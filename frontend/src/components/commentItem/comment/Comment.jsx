@@ -1,7 +1,7 @@
 import Avatar from "../../avatar/Avatar";
 
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { FaHeart, FaRegHeart } from "react-icons/fa6";
+
+import { FaRegHeart } from "react-icons/fa6";
 import { FaShare } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 
@@ -9,14 +9,14 @@ const Comment = () => {
   return (
     <div className="comment-item">
       <div className="user-infos">
-        <a href={`/channel/abc`} className="channel-avatar">
+        <p className="channel-avatar">
           <Avatar size={26} />
-        </a>
+        </p>
 
         <div className="info-wrapper">
-          <a href={`/channel/abc`} className="channel-name">
+          <p className="channel-name">
             Khang
-          </a>
+          </p>
           <span className="timeline">1 days ago</span>
         </div>
       </div>
