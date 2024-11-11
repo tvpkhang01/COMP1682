@@ -4,15 +4,22 @@ import Video from 'react-native-video';
 import { getVideoUrl } from '../../api/Api';
 
 const VideoPlayer = ({ src }) => {
+  console.log(src, "Loading video");
   const videoUrl = getVideoUrl(src.videoUrl);
   console.log(videoUrl);
   return (
     <View style={styles.videoPlayer}>
-      <Video
+      {/* <Video
         source={{ uri: videoUrl }}
+        autoplay={false}
+        defaultMuted={false}
+        style={styles.video}
+        resizeMode="cover"
+      /> */}
+      <Video
+        source={{ uri: "https://www.w3schools.com/html/mov_bbb.mp4" }}
         style={styles.video}
         controls
-        resizeMode="cover"
       />
     </View>
   );
@@ -21,7 +28,6 @@ const VideoPlayer = ({ src }) => {
 const styles = StyleSheet.create({
   videoPlayer: {
     width: '100%',
-    aspectRatio: 16 / 9,
     borderRadius: 10,
     overflow: 'hidden',
   },

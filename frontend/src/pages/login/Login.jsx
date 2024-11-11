@@ -41,6 +41,7 @@ const Login = () => {
       if (res.status == 200) {
         loginAuth(res.data);
         handleClear();
+        alert("Login Success!");
         navigate("/");
       }
     } catch (err) {
