@@ -10,7 +10,7 @@ const getPlaylistsByChannelId = async (req, res, next) => {
     if (playlists && playlists.length > 0) {
       res.status(200).json(l_playlists);
     } else {
-      res.status(404).json("No playlists record found");
+      res.status(203).json("No playlists record found.");
     }
   } catch (error) {
     next(error);

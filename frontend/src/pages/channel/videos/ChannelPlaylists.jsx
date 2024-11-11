@@ -5,7 +5,6 @@ import { getPlaylistsByChannel } from "../../../api/Api";
 // eslint-disable-next-line react/prop-types
 const ChannelPlaylists = ({ channelId }) => {
   const [playlists, setPlaylists] = useState([]);
-
   useEffect(() => {
     loadPlaylistsByChannelId();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,13 +24,11 @@ const ChannelPlaylists = ({ channelId }) => {
 
   return (
     <div className="list-items">
-      {playlists.length > 0 ? (
-        playlists.map((playlist, index) => (
-          <PlaylistCard key={index} playlist={playlist} />
-        ))
-      ) : (
-        "No playlists found"
-      )}
+      {playlists.length > 0
+        ? playlists.map((playlist, index) => (
+            <PlaylistCard key={index} playlist={playlist} />
+          ))
+        : "No playlists found"}
     </div>
   );
 };

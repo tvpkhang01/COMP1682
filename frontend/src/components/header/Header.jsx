@@ -23,8 +23,6 @@ const Header = () => {
 
   const avatar = getAvatarUrl(authUser?.avatarUrl);
 
-  console.log(onSearch);
-
   const handleSearch = (e) => {
     e.preventDefault();
     if (!onSearch) return;

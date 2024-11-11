@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { FaImage, FaArrowLeft } from "react-icons/fa";
 
 const Uplist = ({ selectedPlaylist, setSelectedPlaylist, onClose }) => {
-  console.log(selectedPlaylist);
   const { state, logoutAuth } = useContext(AppContext);
   const [info, setInfo] = useState({
     title: selectedPlaylist ? selectedPlaylist.title : "",

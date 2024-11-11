@@ -29,10 +29,9 @@ const Channel = () => {
   const tabPlaylist = url.searchParams.get("tabPlaylist");
 
   useEffect(() => {
-    console.log(tabPlaylist);
     setTabIndex(tabPlaylist ? 1 : 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [tabPlaylist]);
 
   useEffect(() => {
     loadCurrentChannel();

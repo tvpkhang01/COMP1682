@@ -10,7 +10,6 @@ const Login = () => {
   const [errMessage, setErrMessage] = useState("");
   const userRef = useRef(null);
   const passRef = useRef(null);
-  console.log(state?.auth);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -42,6 +41,7 @@ const Login = () => {
       if (res.status == 200) {
         loginAuth(res.data);
         handleClear();
+        navigate("/");
       }
     } catch (err) {
       setErrMessage(err.response.data);
