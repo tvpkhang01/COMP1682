@@ -15,10 +15,11 @@ const ChannelVideos = ({ channelId }) => {
     try {
       const res = await getVideosByChannel(channelId);
       if (res.status === 200) {
+        console.log("Loaded videos:", res.data);
         setVideos(res.data);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error loading videos by channel:", error);
     }
   };
 

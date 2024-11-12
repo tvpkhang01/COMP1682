@@ -4,9 +4,7 @@ import Video from "react-native-video";
 import { getVideoUrl } from "../../api/Api";
 
 const VideoPlayer = ({ src }) => {
-  console.log(src, "Loading video");
   const videoUrl = getVideoUrl(src.videoUrl);
-  console.log(videoUrl);
   return (
     <View style={styles.videoPlayer}>
       <Video
@@ -14,6 +12,7 @@ const VideoPlayer = ({ src }) => {
         autoplay={false}
         defaultMuted={false}
         style={styles.video}
+        controls
         resizeMode="cover"
       />
     </View>

@@ -29,10 +29,7 @@ const Video = () => {
 
   useEffect(() => {
     loadCurrentVideo(id);
-    if (authUser) {
-      loadPlaylists();
-    }
-  }, [id, authUser]);
+  }, [id]);
 
   const loadCurrentVideo = async () => {
     if (!id) return;
@@ -72,35 +69,6 @@ const Video = () => {
         navigation.navigate("Login");
       }
     }
-  };
-
-  const handleDelete = async () => {
-    if (!videoDetails) return;
-
-    Alert.alert("Confirm Delete", "Are you sure you want to delete this?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Delete",
-        onPress: async () => {
-          try {
-            const res = await deleteVideo(videoDetails._id);
-            if (res.status === 200) {
-              navigation.navigate("Home");
-            }
-          } catch (error) {
-            console.log(error);
-            if (error.status === 401) {
-              Alert.alert("Unauthorized. Please log in again.");
-              logoutAuth();
-              navigation.navigate("Login");
-            }
-          }
-        },
-      },
-    ]);
   };
 
   const handleSubscribe = async () => {

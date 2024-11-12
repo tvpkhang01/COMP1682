@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   StyleSheet,
+  FlatList,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import EditChannel from "./editChannel/EditChannel";
@@ -25,10 +26,9 @@ const Channel = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { id } = route.params;
-  
+
   const { state, logoutAuth } = useContext(AppContext);
   const [currentChannel, setCurrentChannel] = useState(null);
-  const [tabIndex, setTabIndex] = useState(0);
   const [onEdit, setOnEdit] = useState(false);
   const [subStatus, setSubStatus] = useState(false);
   const authUser = state?.channel;
@@ -74,15 +74,11 @@ const Channel = () => {
     }
   };
 
-  const handleAdminPage = () => {
-    navigation.navigate("Admin");
-  };
-
-  return (
-    <View contentContainerStyle={styles.container}>
+  const renderHeader = () => (
+    <View>
       <Image
         source={
-          currentChannel
+          currentChannel?.bannerUrl
             ? { uri: getBannerUrl(currentChannel.bannerUrl) }
             : channelBanner
         }
@@ -91,7 +87,7 @@ const Channel = () => {
       <View style={styles.infos}>
         <Image
           source={
-            currentChannel
+            currentChannel?.avatarUrl
               ? { uri: getAvatarUrl(currentChannel.avatarUrl) }
               : avatarImg
           }
@@ -123,39 +119,29 @@ const Channel = () => {
               </Text>
             </TouchableOpacity>
           )}
-          {authUser && currentChannel?.admin && (
-            <TouchableOpacity style={styles.button} onPress={handleAdminPage}>
-              <Text style={styles.buttonText}>Admin Page</Text>
-            </TouchableOpacity>
-          )}
         </View>
+
+        {onEdit && (
+          <EditChannel
+            user={currentChannel}
+            setUser={setCurrentChannel}
+            open={onEdit}
+            onClose={() => setOnEdit(false)}
+          />
+        )}
       </View>
-      <View style={styles.tabWrapper}>
-        <TouchableOpacity
-          style={[styles.tabItem, tabIndex === 0 && styles.activeTab]}
-          onPress={() => setTabIndex(0)}
-        >
-          <Text style={styles.tabText}>Video</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tabItem, tabIndex === 1 && styles.activeTab]}
-          onPress={() => setTabIndex(1)}
-        >
-          <Text style={styles.tabText}>Playlist</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.tabContent}>
-        {tabIndex === 0 && <ChannelVideos channelId={id} />}
-      </View>
-      {onEdit && (
-        <EditChannel
-          user={currentChannel}
-          setUser={setCurrentChannel}
-          open={onEdit}
-          onClose={() => setOnEdit(false)}
-        />
-      )}
     </View>
+  );
+
+  return (
+    <FlatList
+      ListHeaderComponent={renderHeader}
+      data={[]}
+      renderItem={null}
+      keyExtractor={() => "dummy"}
+      ListFooterComponent={<ChannelVideos channelId={id} />}
+      contentContainerStyle={styles.container}
+    />
   );
 };
 
@@ -187,14 +173,11 @@ const styles = StyleSheet.create({
   stats: {
     fontSize: 14,
     color: "gray",
-    marginVertical: 4,
   },
   desc: {
     fontSize: 14,
-    marginVertical: 4,
   },
   button: {
-    marginTop: 8,
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
@@ -204,27 +187,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "bold",
     textAlign: "center",
-  },
-  tabWrapper: {
-    flexDirection: "row",
-    borderBottomWidth: 2,
-    borderBottomColor: "#CCCCCC",
-  },
-  tabItem: {
-    flex: 1,
-    padding: 10,
-    alignItems: "center",
-  },
-  activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: "#FF4D4D",
-  },
-  tabText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  tabContent: {
-    padding: 16,
   },
 });
 
