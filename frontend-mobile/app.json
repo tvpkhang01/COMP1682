@@ -18,10 +18,13 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.comp1786.frontendmobile",
+      "jsEngine": "jsc"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     }
   }
 }
+
