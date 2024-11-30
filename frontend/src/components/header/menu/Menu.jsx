@@ -80,7 +80,7 @@ const HeaderMenu = ({ open, onClose }) => {
               }}
             >
               <FaGear className="header-menu-icon" />
-              <span>Setting (Under Construction)</span>
+              <span>Setting</span>
             </NavLink>
           )}
 

@@ -19,6 +19,8 @@ import Playlist from "./pages/channel/playlist/Playlist";
 function App() {
   const { state, loadChannelInfos, logoutAuth } = useContext(AppContext);
 
+  console.log(state);
+
   useEffect(() => {
     async function checkTokenData() {
       try {
@@ -39,7 +41,7 @@ function App() {
       }
     }
     checkTokenData();
-  }, [state]);
+  }, []);
 
   useEffect(() => {
     getChannelInfos();

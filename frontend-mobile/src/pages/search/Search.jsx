@@ -7,10 +7,10 @@ import VideoCard from "../../components/videoItem/videoCard/VideoCard";
 const Search = ({ navigation }) => {
   const [videos, setVideos] = useState([]);
   const route = useRoute();
-  const onSearch = route.params?.search;
+  const onSearch = route.params?.query;
 
   useEffect(() => {
-    if (onSearch) searchVideo();
+    onSearch && searchVideo();
   }, [onSearch]);
 
   const searchVideo = async () => {

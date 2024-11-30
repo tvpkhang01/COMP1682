@@ -19,12 +19,14 @@ const VideoCard = ({ video }) => {
   };
 
   return (
-    <div className="video-card" onClick={handleVideoClick}>
-      <div className="card-cover">
+    <div className="video-card">
+      <div className="card-cover" onClick={handleVideoClick}>
         <img src={image} alt="Video Image" />
       </div>
       <div className="card-details">
-        <div className="card-title">{video?.title}</div>
+        <div className="card-title" onClick={handleVideoClick}>
+          {video?.title}
+        </div>
         <div className="card-infos">
           <div className="card-profile" onClick={handleChannelClick}>
             <Avatar src={video?.avatarUrl ? avatar : ""} size={24} />

@@ -28,7 +28,7 @@ const Header = () => {
 
   const handleSearch = () => {
     if (!onSearch) return;
-    navigation.navigate("Search", { query: onSearch });
+    navigation.navigate("Search", { query: `?search=${onSearch}` });
   };
 
   return (
@@ -63,14 +63,6 @@ const Header = () => {
             <Ionicons name="search" size={22} color="black" />
           </TouchableOpacity>
         </View>
-
-        {/* <View style={styles.iconContainer}>
-          {authUser && (
-            <>
-              
-            </>
-          )}
-        </View> */}
         <Sider />
       </View>
     </SafeAreaView>

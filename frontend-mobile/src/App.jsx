@@ -4,11 +4,6 @@ import AppContext from "./context/AppContext";
 import { checkToken, getChannel } from "./api/Api";
 
 import Home from "./pages/home/Home";
-// import Video from "./pages/video/Video";
-// import Channel from "./pages/channel/Channel";
-// import Upload from "./pages/upload/Upload";
-// import Login from "./pages/login/Login";
-// import Register from "./pages/register/Register";
 import Header from "./components/header/Header";
 import Search from "./pages/search/Search";
 import Login from "./pages/login/Login";
@@ -16,9 +11,6 @@ import Register from "./pages/register/Register";
 import Channel from "./pages/channel/Channel";
 import Settings from "./pages/channel/settings/Settings";
 import Video from "./pages/video/Video";
-// import Settings from "./pages/channel/settings/Settings";
-// import Uplist from "./pages/uplist/Uplist";
-// import Playlist from "./pages/channel/playlist/Playlist";
 
 const Stack = createStackNavigator();
 
